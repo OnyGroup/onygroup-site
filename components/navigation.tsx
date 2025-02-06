@@ -73,22 +73,6 @@ export function Navigation() {
         {/* Desktop Navigation */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="space-x-2">
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-4 p-6 md:w-[500px] md:grid-cols-2">
-                  {company.map((item) => (
-                    <ListItem
-                      key={item.title}
-                      title={item.title}
-                      href={item.href}
-                    >
-                      {item.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
 
             <NavigationMenuItem>
               <NavigationMenuTrigger>Services</NavigationMenuTrigger>
@@ -124,12 +108,30 @@ export function Navigation() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
+              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-4 p-6 md:w-[500px] md:grid-cols-2">
+                  {company.map((item) => (
+                    <ListItem
+                      key={item.title}
+                      title={item.title}
+                      href={item.href}
+                    >
+                      {item.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
               <Link href="https://yapahub.com" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Yapa Hub
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
+
           </NavigationMenuList>
         </NavigationMenu>
 
