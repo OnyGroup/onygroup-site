@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import {
   Card,
   CardContent,
@@ -16,14 +17,66 @@ import { Mail, MapPin, Phone, Send } from "lucide-react";
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-    (e.target as HTMLFormElement).reset();
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'b4aa257b-307a-4313-88b8-414e2203aedf',
+          subject: `New Contact Form Submission from ${formData.name}`,
+          from_name: "Ony Group Website",
+          ...formData,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast({
+          title: "Message Sent Successfully",
+          description: "Thank you for reaching out! We'll get back to you as soon as possible.",
+          variant: "default",
+        });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,7 +121,7 @@ export default function Contact() {
                       Call Us
                     </CardTitle>
                     <CardDescription>
-                      +254 728 999 837
+                      +254 011 055 189
                     </CardDescription>
                   </CardHeader>
                 </Card>
@@ -101,6 +154,8 @@ export default function Contact() {
                     <Input
                       id="name"
                       name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       required
                       placeholder="John Doe"
                     />
@@ -111,6 +166,8 @@ export default function Contact() {
                     <Input
                       id="email"
                       name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       type="email"
                       required
                       placeholder="john@example.com"
@@ -122,6 +179,8 @@ export default function Contact() {
                     <Input
                       id="phone"
                       name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
                       type="tel"
                       placeholder="+254 700 000 000"
                     />
@@ -132,6 +191,8 @@ export default function Contact() {
                     <Textarea
                       id="message"
                       name="message"
+                      value={formData.message}
+                      onChange={handleChange}
                       required
                       placeholder="Tell us about your project..."
                       className="min-h-[150px]"
@@ -140,7 +201,9 @@ export default function Contact() {
 
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? (
-                      "Sending..."
+                      <>
+                        <span className="animate-pulse">Sending...</span>
+                      </>
                     ) : (
                       <>
                         Send Message
