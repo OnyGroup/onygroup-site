@@ -51,8 +51,8 @@ export default function Careers() {
               </p>
               <p className="mt-4 text-muted-foreground">
                 Please check back periodically for new opportunities, or send your CV to{" "}
-                <Link href="mailto:careers@onygroup.com" className="text-primary hover:underline">
-                  careers@onygroup.com
+                <Link href="mailto:connect@onygroup.com" className="text-primary hover:underline">
+                  connect@onygroup.com
                 </Link>
                 {" "}for future consideration.
               </p>
