@@ -27,11 +27,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio" className="text-base text-muted-foreground hover:text-foreground">
-                  Portfolio
-                </Link>
-              </li>
-              <li>
                 <Link href="/careers" className="text-base text-muted-foreground hover:text-foreground">
                   Careers
                 </Link>
@@ -69,7 +64,7 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-3 text-base text-muted-foreground">
                 <Phone className="h-5 w-5 flex-shrink-0" />
-                <span>+254 011 055 189</span>
+                <span>+254 728 999 837</span>
               </li>
               <li className="flex items-center space-x-3 text-base text-muted-foreground">
                 <Mail className="h-5 w-5 flex-shrink-0" />
