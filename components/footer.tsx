@@ -64,16 +64,16 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-3 text-base text-muted-foreground">
                 <Phone className="h-5 w-5 flex-shrink-0" />
-                <span>+254 011 055 189</span>
+                <a href="tel:+254011055189" className="hover:underline" >+254 011 055 189</a>
               </li>
               <li className="flex items-center space-x-3 text-base text-muted-foreground">
                 <Mail className="h-5 w-5 flex-shrink-0" />
-                <span>connect@onygroup.com</span>
+                <a href="mailto:connect@onygroup.com" className="hover:underline" >connect@onygroup.com</a>
               </li>
             </ul>
           </div>
-        </div>
-
+          </div>
+          
         <div className="mt-16 border-t pt-8">
           <p className="text-center text-base text-muted-foreground">
             © {new Date().getFullYear()} Ony Group. All rights reserved.

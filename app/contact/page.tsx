@@ -121,7 +121,7 @@ export default function Contact() {
                       Call Us
                     </CardTitle>
                     <CardDescription>
-                      +254 011 055 189
+                      <a href="tel:+254011055189" className="hover:underline">+254 011 055 189</a>
                     </CardDescription>
                   </CardHeader>
                 </Card>
@@ -133,7 +133,7 @@ export default function Contact() {
                       Email Us
                     </CardTitle>
                     <CardDescription>
-                      connect@onygroup.com
+                      <a href="mailto:connect@onygroup.com" className="hover:underline">connect@onygroup.com</a>
                     </CardDescription>
                   </CardHeader>
                 </Card>
