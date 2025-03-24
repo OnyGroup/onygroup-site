@@ -21,24 +21,24 @@ const projects = [
     category: "Tech Solutions",
     link: "/portfolio/karuana-farm"
   },
-  {
-    title: "Gee Designs",
-    description: "Sales Optimization",
-    category: "Digital Growth",
-    link: "/portfolio/gee-designs"
-  },
+  // {
+  //   title: "Gee Designs",
+  //   description: "Sales Optimization",
+  //   category: "Digital Growth",
+  //   link: "/portfolio/gee-designs"
+  // },
   {
     title: "BuuPass",
     description: "Customer Segmentation",
     category: "Consulting",
     link: "/portfolio/buupass-segmentation"
   },
-  {
-    title: "BuuPass",
-    description: "Product Design (Book a Flight on Safaricom Mini Apps)",
-    category: "Tech Solutions",
-    link: "/portfolio/buupass-product"
-  },
+  // {
+  //   title: "BuuPass",
+  //   description: "Product Design (Book a Flight on Safaricom Mini Apps)",
+  //   category: "Tech Solutions",
+  //   link: "/portfolio/buupass-product"
+  // },
   {
     title: "Africa Management Institute",
     description: "Landing Page Redesign",
