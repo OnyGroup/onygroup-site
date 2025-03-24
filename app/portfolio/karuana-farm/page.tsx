@@ -61,21 +61,22 @@ export default function KaruanaFarmCaseStudy() {
           </div>
         </div>
         <div className="relative aspect-video overflow-hidden rounded-lg border bg-gradient-to-br from-[#e6f7ea] to-[#f0f9e6] p-8">
-          <div className="flex h-full items-center justify-center">
-            <div className="relative h-40 w-40">
-              <Bird className="h-full w-full text-primary/70" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Image
-                  src="/placeholder.svg?height=160&width=160"
-                  alt="Karuana Farm Logo"
-                  width={160}
-                  height={160}
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+  <div className="flex h-full items-center justify-center">
+    <div className="relative h-40 w-40">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Image
+          src="/images/karuana-farm-logo.jpg?height=1502&width=3000"
+          alt="Karuana Farm Logo"
+          width={3000}
+          height={1502}
+          className="object-cover w-full h-full" // Ensure the image covers the entire container
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+
       </div>
 
       {/* Client Overview */}
