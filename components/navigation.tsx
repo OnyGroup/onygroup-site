@@ -99,13 +99,13 @@ export function Navigation() {
               </Link>
             </NavigationMenuItem>
 
-            <NavigationMenuItem>
+            {/* <NavigationMenuItem>
               <Link href="/blog" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Blog
                 </NavigationMenuLink>
               </Link>
-            </NavigationMenuItem>
+            </NavigationMenuItem> */}
 
             <NavigationMenuItem>
               <NavigationMenuTrigger>Company</NavigationMenuTrigger>
@@ -167,7 +167,7 @@ export function Navigation() {
 
                 <div className="space-y-4 mt-6">
                   <MobileNavItem href="/portfolio">Portfolio</MobileNavItem>
-                  <MobileNavItem href="/blog">Blog</MobileNavItem>
+                  {/* <MobileNavItem href="/blog">Blog</MobileNavItem> */}
                   <MobileNavItem href="https://yapahub.com">Yapa Hub</MobileNavItem>
                 </div>
 

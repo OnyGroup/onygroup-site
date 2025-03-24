@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Image from "next/image"
 import {
   ArrowRight,
@@ -618,15 +619,16 @@ export default function KaruanaFarmCaseStudy() {
         <CardHeader>
           <CardTitle className="text-2xl">Ready to transform your business with digital solutions?</CardTitle>
           <CardDescription>
-            Let's discuss how our expertise in digital transformation can help your organization thrive in the digital
-            age.
+            Let's discuss how our expertise in digital transformation can help your organization thrive in the digital age.
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button className="group">
-            Start Your Digital Journey
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
+          <Link href="/contact" passHref>
+            <Button className="group">
+              Start Your Digital Journey
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </div>

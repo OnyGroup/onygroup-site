@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from 'next/link';
 import {
   ArrowRight,
   Award,
@@ -22,7 +23,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 export default function AMICaseStudy() {
   return (
@@ -612,10 +612,12 @@ export default function AMICaseStudy() {
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button className="group">
-            Start Your Design Journey
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
+          <Link href="/contact" passHref>
+            <Button className="group">
+              Start Your Design Journey
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </div>
