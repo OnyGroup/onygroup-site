@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
 import { ArrowLeft, Send } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 import WaitlistForm, { WaitlistFormData } from "./WaitlistForm"
@@ -37,10 +36,6 @@ export default function WaitlistPage() {
               >
                 Submit Another Response
               </button>
-              <Link href="/" className="inline-flex items-center text-[#FF4500] hover:text-[#E63F00] transition">
-                <ArrowLeft className="h-5 w-5 mr-2" />
-                Back to Home
-              </Link>
             </div>
           </div>
         </div>
@@ -52,11 +47,6 @@ export default function WaitlistPage() {
     <div className="min-h-screen bg-white dark:bg-[#020220] text-gray-900 dark:text-white">
       <Toaster position="top-right" />
       <div className="container mx-auto px-6 py-12">
-        <Link href="/" className="inline-flex items-center text-[#FF4500] hover:text-[#E63F00] mb-8 transition">
-          <ArrowLeft className="h-5 w-5 mr-2" />
-          Back to Home
-        </Link>
-
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-4">Schedule a Call with OnSpace</h1>
           <p className="text-black mb-8">

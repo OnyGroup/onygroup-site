@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Loader2 } from "lucide-react"
 import toast from "react-hot-toast"
+import countryList from "react-select-country-list"
 
 export interface WaitlistFormData {
   name: string
@@ -12,7 +13,8 @@ export interface WaitlistFormData {
   role: string
   useCase: string
   businessCategory: string
-  location: string
+  city: string
+  country: string
   teamSize: string
   revenueRange: string
 }
@@ -30,7 +32,8 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
     role: "",
     useCase: "",
     businessCategory: "",
-    location: "",
+    city: "",
+    country: "",
     teamSize: "",
     revenueRange: ""
   })
@@ -38,15 +41,20 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Partial<WaitlistFormData>>({})
 
+  // Get country list options
+  const countries = useMemo(() => countryList().getData(), [])
+
   const businessCategories = [
-    "E-commerce",
-    "SaaS",
-    "Healthcare",
-    "Finance",
-    "Retail",
-    "Manufacturing",
-    "Education",
-    "Technology",
+    "Agriculture/Agribusiness",
+    "Automotive(Repair, Dealerships, Vendors)",
+    "Construction/Engineering",
+    "Distribution/Wholesale",
+    "Healthcare (Hospitals, Clinics)",
+    "Manufacturing (Production/Factory)",
+    "Professional Services/Consulting",
+    "Real Estate (Management, Development)",
+    "Retail (Stores/Online Shops)",
+    "Technology/IT Services",
     "Other"
   ]
 
@@ -66,6 +74,19 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
     "KES 5M - 10M",
     "KES 10M - 50M",
     "KES 50M+"
+  ]
+
+  const operationalChallenges = [
+    "Inventory Management",
+    "Sales Tracking & Reporting",
+    "Cash Flow & Financial Management",
+    "Workflow & Production Inefficiencies",
+    "Communication & Team Coordination",
+    "Data Accuracy & Integration",
+    "Compliance & Regulatory Requirements",
+    "Customer Relationship Management",
+    "Technology Complexity",
+    "Lack of Operational Visibility"
   ]
 
   const validateForm = () => {
@@ -89,8 +110,11 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
     if (!formData.businessCategory) {
       newErrors.businessCategory = "Business category is required"
     }
-    if (!formData.location) {
-      newErrors.location = "Location is required"
+    if (!formData.city) {
+      newErrors.city = "City is required"
+    }
+    if (!formData.country) {
+      newErrors.country = "Country is required"
     }
     if (!formData.teamSize) {
       newErrors.teamSize = "Team size is required"
@@ -111,6 +135,12 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
     setLoading(true)
 
     try {
+      // Combine city and country for location field for backward compatibility
+      const submissionData = {
+        ...formData,
+        location: `${formData.city}, ${formData.country}`
+      }
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -118,7 +148,7 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
         },
         body: JSON.stringify({
           access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
-          ...formData,
+          ...submissionData,
         }),
       })
 
@@ -237,19 +267,40 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
           {errors.businessCategory && <p className="mt-1 text-sm text-red-500">{errors.businessCategory}</p>}
         </div>
 
+        {/* Updated Location fields - split into City and Country */}
         <div>
-          <label htmlFor="location" className="block text-sm font-medium mb-2">
-            Location*
+          <label htmlFor="city" className="block text-sm font-medium mb-2">
+            City*
           </label>
           <input
             type="text"
-            id="location"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            id="city"
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] focus:outline-none"
-            placeholder="City, Country"
+            placeholder="City"
           />
-          {errors.location && <p className="mt-1 text-sm text-red-500">{errors.location}</p>}
+          {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="country" className="block text-sm font-medium mb-2">
+            Country*
+          </label>
+          <select
+            id="country"
+            value={formData.country}
+            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+            className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] focus:outline-none"
+          >
+            <option value="">Select country</option>
+            {countries.map((country) => (
+              <option key={country.value} value={country.label}>
+                {country.label}
+              </option>
+            ))}
+          </select>
+          {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
         </div>
 
         <div>
@@ -292,19 +343,24 @@ export default function WaitlistForm({ onSubmitSuccess }: WaitlistFormProps) {
         </div>
       </div>
 
-      {/* Use Case Section - Full Width */}
+      {/* Changed operational challenge to dropdown */}
       <div>
         <label htmlFor="useCase" className="block text-sm font-medium mb-2">
-          Use Case/Pain Points
+          What is your biggest operational challenge?
         </label>
-        <textarea
+        <select
           id="useCase"
           value={formData.useCase}
           onChange={(e) => setFormData({ ...formData, useCase: e.target.value })}
           className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#FF4500] focus:ring-1 focus:ring-[#FF4500] focus:outline-none"
-          placeholder="Describe your current challenges and what you hope to achieve with OnSpace..."
-          rows={4}
-        />
+        >
+          <option value="">Select your biggest challenge</option>
+          {operationalChallenges.map((challenge) => (
+            <option key={challenge} value={challenge}>
+              {challenge}
+            </option>
+          ))}
+        </select>
       </div>
 
       <button
