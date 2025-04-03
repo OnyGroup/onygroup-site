@@ -234,15 +234,14 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
                 required: true,
               }}
               containerClass="w-full"
-              inputClass="w-full pl-12 !border !border-gray-300 !rounded-lg !bg-white !text-gray-900 focus:!border-[#006B54] focus:!ring-1 focus:!ring-[#006B54] focus:!outline-none"
-              buttonClass="!bg-white !border-r-gray-300 !px-3"
+              inputClass="w-full pl-18 !border !border-gray-300 !rounded-lg !bg-white !text-gray-900 focus:!border-[#006B54] focus:!ring-1 focus:!ring-[#006B54] focus:!outline-none"
+              buttonClass="!bg-white !border-r-gray-300 !px-3 !w-14"
               dropdownClass="!bg-white !text-gray-900"
               enableSearch
             />
 
             {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
           </div>
-
           <div>
             <label htmlFor="role" className="block text-sm font-medium mb-2">
               What's your role in the company*
