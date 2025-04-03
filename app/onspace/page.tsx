@@ -5,12 +5,17 @@ import { ArrowLeft, Check } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 import WaitlistForm from "./WaitlistForm"
 import Image from "next/image"
-import { CarouselWithIndicators } from "./carousel-plugin"
+import { CarouselWithAutoplay } from "./carousel-plugin"
+import { MobileCarousel } from "./MobileCarousel"
+import { useMobile } from "@/hooks/use-mobile"
 
 export default function WaitlistPage() {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [showFormOnMobile, setShowFormOnMobile] = useState(false)
+
+  const isMobile = useMobile()
 
   const handleNext = (data) => {
     setFormData((prev) => ({ ...prev, ...data }))
@@ -30,6 +35,10 @@ export default function WaitlistPage() {
     setStep(1)
     setFormData({})
     setSubmitted(false)
+  }
+
+  const handleShowForm = () => {
+    setShowFormOnMobile(true)
   }
 
   if (submitted) {
@@ -74,12 +83,50 @@ export default function WaitlistPage() {
               Visit Ony Group Website
             </a>
           </div>
-
         </div>
       </div>
     )
   }
 
+  // Mobile landing page view
+  if (isMobile && !showFormOnMobile) {
+    return (
+      <div className="min-h-screen bg-[#006B54] flex flex-col">
+        <div className="flex-1 p-8 flex flex-col">
+          {/* Logo */}
+          <Image
+            src="/onspace-logo.svg?height=31&width=119"
+            alt="OnSpace Logo"
+            width={119}
+            height={31}
+            className="mb-8"
+          />
+
+          <h1 className="text-4xl font-bold text-white mb-4">Get OnSpace</h1>
+          <p className="text-white/90 mb-8">The best way to modernize and automate your operations</p>
+
+          {/* Spacer to push content to center */}
+          <div className="flex-grow"></div>
+
+          {/* Mobile Carousel */}
+          <MobileCarousel />
+
+          {/* Spacer to push button to bottom */}
+          <div className="flex-grow"></div>
+
+          {/* CTA Button */}
+          <button
+            onClick={handleShowForm}
+            className="w-full py-4 bg-[#FF4500] text-white rounded-full font-semibold hover:bg-[#E63F00] transition mt-8"
+          >
+            Share information to book a demo
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Desktop view or mobile with form shown
   return (
     <div className="min-h-screen bg-white dark:bg-[#020220] text-gray-900 dark:text-white">
       <Toaster position="top-right" />
@@ -110,13 +157,24 @@ export default function WaitlistPage() {
             )}
 
             {/* Product Screenshots - Using shadcn/ui Carousel with Autoplay and Indicators */}
-            <CarouselWithIndicators />
+            <CarouselWithAutoplay />
           </div>
         </div>
 
         {/* Right Section - Form */}
         <div className="w-full md:w-3/5 p-8 md:p-12">
           <div className="max-w-lg mx-auto">
+            {/* Mobile Back Button */}
+            {isMobile && showFormOnMobile && (
+              <button
+                onClick={() => setShowFormOnMobile(false)}
+                className="flex items-center text-gray-600 dark:text-gray-300 mb-6 hover:text-gray-900 dark:hover:text-white"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                <span>Back</span>
+              </button>
+            )}
+
             {/* Progress Bar */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-2">

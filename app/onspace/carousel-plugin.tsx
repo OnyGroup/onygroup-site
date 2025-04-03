@@ -5,26 +5,15 @@ import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 
-export function CarouselWithIndicators() {
+export function CarouselWithAutoplay() {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+  const [loaded, setLoaded] = useState(false)
 
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }))
 
-  useEffect(() => {
-    if (!api) {
-      return
-    }
-
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap())
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
-    })
-  }, [api])
-
+  // Images array with the last and first items duplicated to ensure proper looping
   const images = [
     {
       main: "/images/gos1.webp",
@@ -43,6 +32,29 @@ export function CarouselWithIndicators() {
     },
   ]
 
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    // Set loaded to true once the API is initialized
+    setLoaded(true)
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+
+    // Force a rerender after a short delay to ensure all images are displayed
+    const timer = setTimeout(() => {
+      api.reInit()
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [api])
+
   return (
     <div className="hidden md:block mt-auto">
       <Carousel
@@ -52,6 +64,7 @@ export function CarouselWithIndicators() {
         opts={{
           align: "center",
           loop: true,
+          startIndex: 0,
         }}
       >
         <CarouselContent className="h-[300px] items-center">
@@ -62,10 +75,11 @@ export function CarouselWithIndicators() {
                 <div className="absolute transform scale-[0.65] -translate-x-[25%] z-10">
                   <Image
                     src={imageSet.left || "/placeholder.svg"}
-                    alt={`Dashboard Preview ${index + 1}`}
+                    alt={`Dashboard Preview Left ${index + 1}`}
                     width={400}
                     height={254}
                     className="rounded-md shadow-lg opacity-90"
+                    priority={index === 0} // Add priority to first slide images
                   />
                 </div>
 
@@ -73,10 +87,11 @@ export function CarouselWithIndicators() {
                 <div className="absolute z-20 shadow-xl">
                   <Image
                     src={imageSet.main || "/placeholder.svg"}
-                    alt={`Dashboard Preview ${index + 1}`}
+                    alt={`Dashboard Preview Center ${index + 1}`}
                     width={500}
                     height={318}
                     className="rounded-md"
+                    priority={index === 0} // Add priority to first slide images
                   />
                 </div>
 
@@ -84,10 +99,11 @@ export function CarouselWithIndicators() {
                 <div className="absolute transform scale-[0.65] translate-x-[25%] z-10">
                   <Image
                     src={imageSet.right || "/placeholder.svg"}
-                    alt={`Dashboard Preview ${index + 1}`}
+                    alt={`Dashboard Preview Right ${index + 1}`}
                     width={400}
                     height={254}
                     className="rounded-md shadow-lg opacity-90"
+                    priority={index === 0} // Add priority to first slide images
                   />
                 </div>
               </div>
