@@ -67,6 +67,24 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
     "Other",
   ]
 
+  const commonRoles = [
+    "CEO/Founder",
+    "COO/Operations Manager",
+    "CFO/Finance Manager",
+    "CTO/Technical Lead",
+    "Sales Manager",
+    "Marketing Manager",
+    "HR Manager",
+    "IT Manager",
+    "Administrative Staff",
+    "Business Analyst",
+    "Procurement Officer",
+    "Customer Service Manager",
+    "General Manager",
+    "Director",
+    "Other"
+  ];
+
   const teamSizes = ["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"]
 
   const revenueRanges = [
@@ -93,7 +111,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
 
   const handleMultiSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, field: string) => {
     const options = e.target.options;
-    const selectedValues = [];
+    const selectedValues: string[] = [];
     for (let i = 0; i < options.length; i++) {
       if (options[i].selected) {
         selectedValues.push(options[i].value);
@@ -197,7 +215,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
           body: JSON.stringify({
             access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
             ...submissionData,
-            useCase: submissionData.useCase.join(', '), // Join selected options into a string
+            useCase: submissionData.useCase.join(', '),
           }),
         });
   
@@ -227,7 +245,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
         },
         body: JSON.stringify({
           ...submissionData,
-          useCase: submissionData.useCase.join(', '), // Join selected options into a string
+          useCase: submissionData.useCase.join(', '),
         }),
       });
   
@@ -315,14 +333,19 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
             <label htmlFor="role" className="block text-sm font-medium mb-2">
               What's your role in the company*
             </label>
-            <input
-              type="text"
+            <select
               id="role"
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              placeholder="Enter your role"
               className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#006B54] focus:ring-1 focus:ring-[#006B54] focus:outline-none"
-            />
+            >
+              <option value="">Select your role</option>
+              {commonRoles.map((role) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
             {errors.role && <p className="mt-1 text-sm text-red-500">{errors.role}</p>}
           </div>
 
