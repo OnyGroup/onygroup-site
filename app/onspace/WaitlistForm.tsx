@@ -146,44 +146,82 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+    e.preventDefault();
+  
     if (!validateStep2()) {
-      toast.error("Please check the form for errors")
-      return
+      toast.error("Please check the form for errors");
+      return;
     }
-
-    setLoading(true)
-
+  
+    setLoading(true);
+  
     try {
       // Combine city and country for location field for backward compatibility
       const { city, country, ...submissionData } = formData;
-
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
-          ...submissionData,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        onSubmit(formData)
-        toast.success("Form submitted successfully!")
-      } else {
-        throw new Error("Submission failed")
+  
+      console.log('Submission Data:', submissionData); // Log the submission data
+  
+      // Attempt to send data to Web3Forms
+      try {
+        const web3FormsResponse = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
+            ...submissionData,
+          }),
+        });
+  
+        if (!web3FormsResponse.ok) {
+          const errorText = await web3FormsResponse.text();
+          console.error('Web3Forms response not OK:', web3FormsResponse.status, errorText);
+          throw new Error(`Web3Forms submission failed: ${web3FormsResponse.status}`);
+        }
+  
+        const web3FormsData = await web3FormsResponse.json();
+  
+        if (!web3FormsData.success) {
+          throw new Error("Web3Forms submission failed");
+        }
+  
+        toast.success("Submission successful!");
+      } catch (web3FormsError) {
+        console.error('Web3Forms submission error:', web3FormsError);
+        toast.error("Web3Forms submission failed, but proceeding with Lark.");
       }
+  
+      // Send data to Lark regardless of Web3Forms success
+      const larkResponse = await fetch('/api/lark-submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+  
+      if (!larkResponse.ok) {
+        const larkErrorText = await larkResponse.text();
+        throw new Error(`Lark submission failed: ${larkErrorText}`);
+      }
+  
+      const larkResult = await larkResponse.json();
+  
+      if (!larkResult.success) {
+        throw new Error("Lark submission failed");
+      }
+  
+      onSubmit(formData);
+      toast.success("Form submitted successfully to Lark!");
     } catch (error) {
-      toast.error("An error occurred. Please try again.")
+      console.error('Error during form submission:', error);
+      toast.error("An error occurred while submitting to Lark. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+    
 
   if (step === 1) {
     return (
