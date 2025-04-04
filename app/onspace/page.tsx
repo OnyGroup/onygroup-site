@@ -98,7 +98,9 @@ export default function WaitlistPage() {
 
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Get OnSpace</h1>
-              <p className="text-white/90 text-xl md:text-2xl mb-12">The best way to modernize and automate your operations</p>
+              <p className="text-white/90 text-3xl md:text-4xl mb-12">
+            The best way to modernize and automate your operations
+          </p>
             </div>
 
           {/* Spacer to push content to center */}
