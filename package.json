@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@netlify/plugin-nextjs": "^5.10.3",
     "@next/swc-wasm-nodejs": "13.5.1",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -75,10 +76,17 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
+    "uuid": "^11.1.0",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/react-select-country-list": "^2.2.3"
+    "@types/react-select-country-list": "^2.2.3",
+    "@netlify/plugin-nextjs": "^5.10.3"
+  },
+  "netlify": {
+    "plugins": [
+      "@netlify/plugin-nextjs"
+    ]
   }
 }
