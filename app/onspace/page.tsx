@@ -5,8 +5,8 @@ import { ArrowLeft, Check } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 import WaitlistForm from "./WaitlistForm"
 import Image from "next/image"
-import { CarouselWithAutoplay } from "./carousel-plugin"
-import { MobileCarousel } from "./MobileCarousel"
+// import { CarouselWithAutoplay } from "./carousel-plugin"
+// import { MobileCarousel } from "./MobileCarousel"
 import { useMobile } from "@/hooks/use-mobile"
 
 export default function WaitlistPage() {
@@ -89,21 +89,23 @@ export default function WaitlistPage() {
         <div className="flex-1 p-8 flex flex-col">
           {/* Logo */}
           <Image
-            src="/onspace-logo.svg?height=31&width=119"
+            src="/onspclogo1.png?height=130&width=553"
             alt="OnSpace Logo"
-            width={119}
-            height={31}
+            width={553}
+            height={130}
             className="mb-8"
           />
 
-          <h1 className="text-4xl font-bold text-white mb-4">Get OnSpace</h1>
-          <p className="text-white/90 mb-8">The best way to modernize and automate your operations</p>
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Get OnSpace</h1>
+              <p className="text-white/90 text-xl md:text-2xl mb-12">The best way to modernize and automate your operations</p>
+            </div>
 
           {/* Spacer to push content to center */}
           <div className="flex-grow"></div>
 
           {/* Mobile Carousel */}
-          <MobileCarousel />
+          {/* <MobileCarousel /> */}
 
           {/* Spacer to push button to bottom */}
           <div className="flex-grow"></div>
@@ -130,15 +132,18 @@ export default function WaitlistPage() {
           <div className="flex flex-col h-full">
             {/* Logo */}
             <Image
-              src="/onspace-logo.svg?height=31&width=119"
+              src="/onspclogo1.png?height=130&width=553"
               alt="OnSpace Logo"
-              width={119}
-              height={31}
+              width={553}
+              height={130}
               className="mb-12"
             />
 
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Get OnSpace</h1>
-            <p className="text-white/90 mb-12">The best way to modernize and automate your operations</p>
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Get OnSpace</h1>
+              <p className="text-white/90 text-xl md:text-2xl mb-12">The best way to modernize and automate your operations</p>
+            </div>
+
 
             {step === 2 && (
               <div className="mt-8">
@@ -151,7 +156,7 @@ export default function WaitlistPage() {
             )}
 
             {/* Product Screenshots - Using shadcn/ui Carousel with Autoplay and Indicators */}
-            <CarouselWithAutoplay />
+            {/* <CarouselWithAutoplay /> */}
           </div>
         </div>
 

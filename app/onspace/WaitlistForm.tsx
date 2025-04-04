@@ -3,30 +3,31 @@
 import type React from "react"
 
 import { useState, useMemo, useEffect } from "react"
-import { Loader2 } from "lucide-react"
+import { Loader2, Check } from "lucide-react"
 import toast from "react-hot-toast"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
+import { Checkbox } from "@/components/ui/checkbox"
 
 export interface WaitlistFormData {
-  name: string
-  email: string
-  phone: string
-  role: string
-  company: string
-  businessCategory: string
-  useCase: string
-  city: string
-  country: string
-  teamSize: string
-  revenueRange: string
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  company: string;
+  businessCategory: string;
+  useCase: string[];
+  city: string;
+  country: string;
+  teamSize: string;
+  revenueRange: string;
 }
 
 interface WaitlistFormProps {
-  step: number
-  onNext: (data: Partial<WaitlistFormData>) => void
-  onSubmit: (data: Partial<WaitlistFormData>) => void
-  initialData?: Partial<WaitlistFormData>
+  step: number;
+  onNext: (data: Partial<WaitlistFormData>) => void;
+  onSubmit: (data: Partial<WaitlistFormData>) => void;
+  initialData?: Partial<WaitlistFormData>;
 }
 
 export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} }: WaitlistFormProps) {
@@ -36,14 +37,14 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
     phone: "",
     company: "",
     role: "",
-    useCase: "",
+    useCase: [],
     businessCategory: "",
     city: "",
     country: "",
     teamSize: "",
     revenueRange: "",
     ...initialData,
-  })
+  });
 
   useEffect(() => {
     setFormData((prev) => ({ ...prev, ...initialData }))
@@ -89,6 +90,31 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
     "Technology Complexity",
     "Lack of Operational Visibility",
   ]
+
+  const handleMultiSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, field: string) => {
+    const options = e.target.options;
+    const selectedValues = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selectedValues.push(options[i].value);
+      }
+    }
+    setFormData((prev) => ({ ...prev, [field]: selectedValues }));
+  };
+
+  const handleCheckboxChange = (challenge: string) => {
+    setFormData((prev) => {
+      const currentSelection = [...prev.useCase];
+      
+      if (currentSelection.includes(challenge)) {
+        // Remove item if already selected
+        return { ...prev, useCase: currentSelection.filter(item => item !== challenge) };
+      } else {
+        // Add item if not already selected
+        return { ...prev, useCase: [...currentSelection, challenge] };
+      }
+    });
+  };
 
   const validateStep1 = () => {
     const newErrors: Partial<WaitlistFormData> = {}
@@ -171,6 +197,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
           body: JSON.stringify({
             access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
             ...submissionData,
+            useCase: submissionData.useCase.join(', '), // Join selected options into a string
           }),
         });
   
@@ -198,7 +225,10 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify({
+          ...submissionData,
+          useCase: submissionData.useCase.join(', '), // Join selected options into a string
+        }),
       });
   
       if (!larkResponse.ok) {
@@ -221,6 +251,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
       setLoading(false);
     }
   };
+  
     
 
   if (step === 1) {
@@ -360,22 +391,44 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
         </div>
 
         <div>
-          <label htmlFor="useCase" className="block text-sm font-medium mb-2">
-            What is your biggest operational challenge?
+          <label className="block text-sm font-medium mb-2">
+            What is your biggest operational challenge? <span className="text-gray-500 text-xs">(Select multiple options)</span>
           </label>
+          
+          {/* Hidden select to maintain backward compatibility with existing form handling logic */}
           <select
             id="useCase"
             value={formData.useCase}
-            onChange={(e) => setFormData({ ...formData, useCase: e.target.value })}
-            className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#006B54] focus:ring-1 focus:ring-[#006B54] focus:outline-none"
+            onChange={(e) => handleMultiSelectChange(e, 'useCase')}
+            className="hidden"
+            multiple
           >
-            <option value="">Select operational challenge(s) you need help with</option>
             {operationalChallenges.map((challenge) => (
               <option key={challenge} value={challenge}>
                 {challenge}
               </option>
             ))}
           </select>
+          
+          {/* Checkbox group for better UX */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border border-gray-300 rounded-lg p-4 bg-white">
+            {operationalChallenges.map((challenge) => (
+              <div key={challenge} className="flex items-center space-x-2">
+                <Checkbox 
+                  id={`challenge-${challenge.replace(/\s+/g, '-').toLowerCase()}`}
+                  checked={formData.useCase.includes(challenge)}
+                  onCheckedChange={() => handleCheckboxChange(challenge)}
+                />
+                <label 
+                  htmlFor={`challenge-${challenge.replace(/\s+/g, '-').toLowerCase()}`}
+                  className="text-sm cursor-pointer"
+                >
+                  {challenge}
+                </label>
+              </div>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-gray-500">You can select multiple challenges that apply to your business</p>
         </div>
 
         <div>
@@ -435,4 +488,3 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
     </form>
   )
 }
-
