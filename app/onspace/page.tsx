@@ -76,12 +76,12 @@ export default function WaitlistPage() {
             >
               Schedule a Demo with Stef
             </a>
-            <a
+            {/* <a
               href="https://ony-group.com"
               className="px-6 py-3 border border-gray-300 text-gray-700 dark:text-white rounded-lg font-semibold hover:bg-gray-100 dark:hover:bg-white/10 transition text-center min-w-[220px] whitespace-nowrap underline"
             >
               Visit Ony Group Website
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
