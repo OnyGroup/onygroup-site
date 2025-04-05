@@ -312,6 +312,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
             <label htmlFor="phone" className="block text-sm font-medium mb-2">
               Phone Number*
             </label>
+            
             <PhoneInput
               country={"ke"} 
               value={formData.phone}
@@ -320,13 +321,30 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
                 name: "phone",
                 required: true,
               }}
-              containerClass="w-full"
-              inputClass="w-full pl-18 !border !border-gray-300 !rounded-lg !bg-white !text-gray-900 focus:!border-[#006B54] focus:!ring-1 focus:!ring-[#006B54] focus:!outline-none"
-              buttonClass="!bg-white !border-r-gray-300 !px-3 !w-14"
-              dropdownClass="!bg-white !text-gray-900"
+              containerStyle={{ width: "100%" }}
+              inputStyle={{ 
+                width: "100%", 
+                height: "46px",
+                borderRadius: "0.5rem",
+                backgroundColor: "white",
+                color: "#111827",
+                border: "1px solid #D1D5DB",
+                fontSize: "1rem",
+                paddingLeft: "48px"
+              }}
+              buttonStyle={{
+                backgroundColor: "white",
+                borderRight: "1px solid #D1D5DB",
+                borderTopLeftRadius: "0.5rem",
+                borderBottomLeftRadius: "0.5rem"
+              }}
+              dropdownStyle={{
+                backgroundColor: "white",
+                color: "#111827"
+              }}
               enableSearch
             />
-
+            
             {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
           </div>
           <div>
