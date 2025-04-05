@@ -5,8 +5,6 @@ import { ArrowLeft, Check } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 import WaitlistForm from "./WaitlistForm"
 import Image from "next/image"
-// import { CarouselWithAutoplay } from "./carousel-plugin"
-// import { MobileCarousel } from "./MobileCarousel"
 import { useMobile } from "@/hooks/use-mobile"
 
 export default function WaitlistPage() {
@@ -91,23 +89,29 @@ export default function WaitlistPage() {
           <Image
             src="/onspclogo1.png?height=130&width=553"
             alt="OnSpace Logo"
-            width={553}
-            height={130}
+            width={138}
+            height={33}
             className="mb-8"
           />
 
-            <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Get OnSpace</h1>
-              <p className="text-white/90 text-3xl md:text-4xl mb-12">
-            The best way to modernize and automate your operations
-          </p>
+            <div className="text-left">
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Start your retail digitization journey with us today!
+              </h1>
+              <p className="text-white/90 text-lg md:text-xl mb-12">
+                The best way to modernize and automate your operations
+              </p>
+
+              <ul className="list-disc list-inside text-white/90 text-lg md:text-xl">
+                <li>Sales Force Management</li>
+                <li>Inventory Management</li>
+                <li>Customer Management</li>
+                <li>Logistics Management</li>
+              </ul>
             </div>
 
           {/* Spacer to push content to center */}
           <div className="flex-grow"></div>
-
-          {/* Mobile Carousel */}
-          {/* <MobileCarousel /> */}
 
           {/* Spacer to push button to bottom */}
           <div className="flex-grow"></div>
@@ -159,16 +163,8 @@ export default function WaitlistPage() {
 
             {step === 2 && (
               <div className="mt-8">
-                {/* <h2 className="text-3xl font-bold text-white mb-4">Start your remarkable journey with us!</h2>
-                <p className="text-white/90">
-                  Our cold email automation helps you send personalized cold emails at scale with high email
-                  deliverability.
-                </p> */}
               </div>
             )}
-
-            {/* Product Screenshots - Using shadcn/ui Carousel with Autoplay and Indicators */}
-            {/* <CarouselWithAutoplay /> */}
           </div>
         </div>
 
