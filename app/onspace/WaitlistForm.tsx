@@ -474,7 +474,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
 
         <div>
           <label htmlFor="revenueRange" className="block text-sm font-medium mb-2">
-            Annual Revenue Range
+            Annual Revenue Range (in USD)
           </label>
           <select
             id="revenueRange"
