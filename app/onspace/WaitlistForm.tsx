@@ -356,7 +356,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
               id="role"
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#006B54] focus:ring-1 focus:ring-[#006B54] focus:outline-none"
+              className="w-full px-4 pr-8 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:border-[#006B54] focus:ring-1 focus:ring-[#006B54] focus:outline-none appearance-none"
             >
               <option value="">Select your role</option>
               {commonRoles.map((role) => (
