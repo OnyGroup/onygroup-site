@@ -80,7 +80,7 @@ export default function WaitlistPage() {
     )
   }
 
-  // Mobile landing page view
+  // Mobile landing page view (initial view)
   if (isMobile && !showFormOnMobile) {
     return (
       <div className="min-h-screen bg-[#006B54] flex flex-col">
@@ -94,21 +94,21 @@ export default function WaitlistPage() {
             className="mb-8"
           />
 
-            <div className="text-left">
-              <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                Start your retail digitization journey with us today!
-              </h1>
-              <p className="text-white/90 text-lg md:text-xl mb-12">
-                The best way to modernize and automate your operations
-              </p>
+          <div className="text-left">
+            <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              Start your retail digitization journey with us today!
+            </h1>
+            <p className="text-white/90 text-lg md:text-xl mb-12">
+              The best way to modernize and automate your operations
+            </p>
 
-              <ul className="list-disc list-inside text-white/90 text-lg md:text-xl">
-                <li>Sales Force Management</li>
-                <li>Inventory Management</li>
-                <li>Customer Management</li>
-                <li>Logistics Management</li>
-              </ul>
-            </div>
+            <ul className="list-disc list-inside text-white/90 text-lg md:text-xl">
+              <li>Sales Force Management</li>
+              <li>Inventory Management</li>
+              <li>Customer Management</li>
+              <li>Logistics Management</li>
+            </ul>
+          </div>
 
           {/* Spacer to push content to center */}
           <div className="flex-grow"></div>
@@ -128,7 +128,49 @@ export default function WaitlistPage() {
     )
   }
 
-  // Desktop view or mobile with form shown
+  // Mobile form view (after clicking the button)
+  if (isMobile && showFormOnMobile) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-[#020220] text-gray-900 dark:text-white">
+        <Toaster position="top-right" />
+        <div className="p-8">
+          {/* Mobile Back Button */}
+          <button
+            onClick={() => setShowFormOnMobile(false)}
+            className="flex items-center text-gray-600 dark:text-gray-300 mb-6 hover:text-gray-900 dark:hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            <span>Back</span>
+          </button>
+
+          {/* Progress Bar */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-xl font-bold">Account set up</h2>
+              <span className="text-sm font-medium">{step}/2</span>
+            </div>
+            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-full bg-[#006B54] rounded-full" style={{ width: step === 1 ? "50%" : "100%" }}></div>
+            </div>
+          </div>
+
+          {step === 2 && (
+            <button
+              onClick={handleBack}
+              className="flex items-center text-gray-600 dark:text-gray-300 mb-6 hover:text-gray-900 dark:hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span>Back</span>
+            </button>
+          )}
+
+          <WaitlistForm step={step} onNext={handleNext} onSubmit={handleSubmit} initialData={formData} />
+        </div>
+      </div>
+    )
+  }
+
+  // Desktop view
   return (
     <div className="min-h-screen bg-white dark:bg-[#020220] text-gray-900 dark:text-white">
       <Toaster position="top-right" />
@@ -161,27 +203,13 @@ export default function WaitlistPage() {
               </ul>
             </div>
 
-            {step === 2 && (
-              <div className="mt-8">
-              </div>
-            )}
+            {step === 2 && <div className="mt-8"></div>}
           </div>
         </div>
 
         {/* Right Section - Form */}
         <div className="w-full md:w-3/5 p-8 md:p-12">
           <div className="max-w-lg mx-auto">
-            {/* Mobile Back Button */}
-            {isMobile && showFormOnMobile && (
-              <button
-                onClick={() => setShowFormOnMobile(false)}
-                className="flex items-center text-gray-600 dark:text-gray-300 mb-6 hover:text-gray-900 dark:hover:text-white"
-              >
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                <span>Back</span>
-              </button>
-            )}
-
             {/* Progress Bar */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-2">
