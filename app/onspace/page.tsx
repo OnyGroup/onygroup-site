@@ -136,16 +136,26 @@ export default function WaitlistPage() {
             <Image
               src="/onspclogo1.png?height=130&width=553"
               alt="OnSpace Logo"
-              width={553}
-              height={130}
+              width={138}
+              height={33}
               className="mb-12"
             />
 
-            <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Get OnSpace</h1>
-              <p className="text-white/90 text-xl md:text-2xl mb-12">The best way to modernize and automate your operations</p>
-            </div>
+            <div className="text-left">
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Start your retail digitization journey with us today!
+              </h1>
+              <p className="text-white/90 text-lg md:text-xl mb-12">
+                The best way to modernize and automate your operations
+              </p>
 
+              <ul className="list-disc list-inside text-white/90 text-lg md:text-xl">
+                <li>Sales Force Management</li>
+                <li>Inventory Management</li>
+                <li>Customer Management</li>
+                <li>Logistics Management</li>
+              </ul>
+            </div>
 
             {step === 2 && (
               <div className="mt-8">
