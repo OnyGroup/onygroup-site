@@ -88,13 +88,14 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
   const teamSizes = ["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"]
 
   const revenueRanges = [
-    "Less than KES 500K",
-    "KES 500K - 1M",
-    "KES 1M - 5M",
-    "KES 5M - 10M",
-    "KES 10M - 50M",
-    "KES 50M+",
-  ]
+    "Less than $10K",
+    "$10K - $20K",
+    "$20K - $50K",
+    "$50K - $100K",
+    "$100K - $1M",
+    "$1M+",
+  ];
+  
 
   const operationalChallenges = [
     "Inventory Management",
