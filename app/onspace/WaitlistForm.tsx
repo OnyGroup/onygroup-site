@@ -434,7 +434,7 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
 
         <div>
           <label className="block text-sm font-medium mb-2">
-            What is your biggest operational challenge? <span className="text-gray-500 text-xs">(Select multiple options)</span>
+            What is your biggest operational challenge? <span className="text-gray-500 text-xs">(You can select multiple challenges that apply to your business)</span>
           </label>
           
           {/* Hidden select to maintain backward compatibility with existing form handling logic */}
@@ -470,7 +470,6 @@ export default function WaitlistForm({ step, onNext, onSubmit, initialData = {} 
               </div>
             ))}
           </div>
-          <p className="mt-2 text-xs text-gray-500">You can select multiple challenges that apply to your business</p>
         </div>
 
         <div>
