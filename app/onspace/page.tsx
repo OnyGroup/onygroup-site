@@ -146,7 +146,7 @@ export default function WaitlistPage() {
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-bold">Account set up</h2>
+              <h2 className="text-xl font-bold">{step === 1 ? "Personal Details" : "Business Details"}</h2>
               <span className="text-sm font-medium">{step}/2</span>
             </div>
             <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
@@ -213,7 +213,7 @@ export default function WaitlistPage() {
             {/* Progress Bar */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-bold">Account set up</h2>
+                <h2 className="text-xl font-bold">{step === 1 ? "Personal Details" : "Business Details"}</h2>
                 <span className="text-sm font-medium">{step}/2</span>
               </div>
               <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
