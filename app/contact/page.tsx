@@ -38,40 +38,93 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      // Format submission data
+      const submissionData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        subject: `New Contact Form Submission from ${formData.name}`,
+        from_name: "Ony Group Website",
+      };
+
+      // 1. Attempt to send data to Web3Forms
+      try {
+        const web3FormsResponse = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
+            ...submissionData,
+          }),
+        });
+
+        if (!web3FormsResponse.ok) {
+          const errorText = await web3FormsResponse.text();
+          console.error('Web3Forms response not OK:', web3FormsResponse.status, errorText);
+          throw new Error(`Web3Forms submission failed: ${web3FormsResponse.status}`);
+        }
+
+        const web3FormsData = await web3FormsResponse.json();
+
+        if (!web3FormsData.success) {
+          throw new Error("Web3Forms submission failed");
+        }
+
+        toast({
+          title: "Message Sent",
+          description: "Your message has been sent successfully.",
+          variant: "default",
+        });
+      } catch (web3FormsError) {
+        console.error('Web3Forms submission error:', web3FormsError);
+        toast({
+          title: "Message sending failed",
+          description: "Could not send email message, but proceeding with Lark.",
+          variant: "destructive",
+        });
+      }
+
+      // 2. Send data to Lark regardless of Web3Forms success
+      const larkResponse = await fetch('/api/lark-submit-ocg-contact-page', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          access_key: 'b4aa257b-307a-4313-88b8-414e2203aedf',
-          subject: `New Contact Form Submission from ${formData.name}`,
-          from_name: "Ony Group Website",
-          ...formData,
-        }),
+        body: JSON.stringify(submissionData),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        toast({
-          title: "Message Sent Successfully",
-          description: "Thank you for reaching out! We'll get back to you as soon as possible.",
-          variant: "default",
-        });
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          message: "",
-        });
-      } else {
-        throw new Error("Something went wrong");
+      if (!larkResponse.ok) {
+        const larkErrorText = await larkResponse.text();
+        throw new Error(`Lark submission failed: ${larkErrorText}`);
       }
+
+      const larkResult = await larkResponse.json();
+
+      if (!larkResult.success) {
+        throw new Error("Lark submission failed");
+      }
+
+      toast({
+        title: "Message Sent Successfully",
+        description: "Thank you for reaching out! We'll get back to you as soon as possible.",
+        variant: "default",
+      });
+
+      // Reset form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
     } catch (error) {
+      console.error('Error during form submission:', error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: "An error occurred while submitting your message. Please try again.",
         variant: "destructive"
       });
     } finally {
