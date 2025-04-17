@@ -73,18 +73,18 @@ export default function Contact() {
           throw new Error("Web3Forms submission failed");
         }
 
-        toast({
-          title: "Message Sent",
-          description: "Your message has been sent successfully.",
-          variant: "default",
-        });
+        // toast({
+        //   title: "Message Sent",
+        //   description: "Your message has been sent successfully.",
+        //   variant: "default",
+        // });
       } catch (web3FormsError) {
         console.error('Web3Forms submission error:', web3FormsError);
-        toast({
-          title: "Message sending failed",
-          description: "Could not send email message, but proceeding with Lark.",
-          variant: "destructive",
-        });
+        // toast({
+        //   title: "Message sending failed",
+        //   description: "Could not send email message, but proceeding with Lark.",
+        //   variant: "destructive",
+        // });
       }
 
       // 2. Send data to Lark regardless of Web3Forms success
