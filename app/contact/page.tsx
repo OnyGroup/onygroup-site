@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -23,6 +23,13 @@ const PhoneInput = dynamic(() => import("react-phone-input-2"), {
 
 // Import the CSS for the phone input
 import "react-phone-input-2/lib/style.css"
+
+// Declare fbq for TypeScript
+declare global {
+  interface Window {
+    fbq: any
+  }
+}
 
 export default function Contact() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -47,6 +54,13 @@ export default function Contact() {
     // Consent
     consentGiven: false,
   })
+
+  // Track page view when component mounts
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "PageView")
+    }
+  }, [])
 
   const [errors, setErrors] = useState({
     services: "",
@@ -194,6 +208,14 @@ export default function Contact() {
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
+      // Track step completion with Facebook Pixel
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("trackCustom", `FormStep${currentStep}Complete`, {
+          step: currentStep,
+          services: formData.services,
+        })
+      }
+
       setCurrentStep((prev) => prev + 1)
       window.scrollTo(0, 0)
     }
@@ -276,6 +298,16 @@ export default function Contact() {
 
       if (!larkResult.success) {
         throw new Error("Lark submission failed")
+      }
+
+      // Track form submission with Facebook Pixel
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: "Contact Form",
+          content_category: formData.services.join(", "),
+          industry: formData.industry,
+          timeline: formData.timeline,
+        })
       }
 
       // Move to success step
@@ -522,7 +554,7 @@ export default function Contact() {
                     By submitting this, you agree that we may use your info to contact you about your request. We'll
                     keep your details safe, never share them without your permission, and you can unsubscribe anytime.
                     See our{" "}
-                    <Link href="/privacy-centre" className="text-orange-600 hover:underline">
+                    <Link href="/privacy-policy" className="text-orange-600 hover:underline">
                       Privacy Policy
                     </Link>{" "}
                     for more details.
