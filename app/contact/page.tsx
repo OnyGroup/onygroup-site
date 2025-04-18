@@ -1,41 +1,168 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { useToast } from "@/hooks/use-toast"
+import { Card, CardContent } from "@/components/ui/card"
+import { Send, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
+  const [currentStep, setCurrentStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
+    // Services step
+    services: [] as string[],
+
+    // Business step
+    businessName: "",
+    website: "",
+    industry: "",
+    timeline: "",
+
+    // Contact step
     name: "",
     email: "",
     phone: "",
     message: "",
-  });
+  })
+
+  const [errors, setErrors] = useState({
+    services: "",
+    businessName: "",
+    industry: "",
+    timeline: "",
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+
+    // Clear error when field is edited
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }))
+    }
+  }
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+    // Clear error when field is edited
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }))
+    }
+  }
+
+  const handleServiceToggle = (service: string) => {
+    setFormData((prev) => {
+      const services = [...prev.services]
+      if (services.includes(service)) {
+        return { ...prev, services: services.filter((s) => s !== service) }
+      } else {
+        return { ...prev, services: [...services, service] }
+      }
+    })
+
+    // Clear services error if at least one is selected
+    if (errors.services) {
+      setErrors((prev) => ({
+        ...prev,
+        services: "",
+      }))
+    }
+  }
+
+  const validateStep = (step: number): boolean => {
+    let isValid = true
+    const newErrors = { ...errors }
+
+    if (step === 1) {
+      if (formData.services.length === 0) {
+        newErrors.services = "Please select at least one service"
+        isValid = false
+      }
+    } else if (step === 2) {
+      if (!formData.businessName.trim()) {
+        newErrors.businessName = "Business name is required"
+        isValid = false
+      }
+      if (!formData.industry) {
+        newErrors.industry = "Please select an industry"
+        isValid = false
+      }
+      if (!formData.timeline) {
+        newErrors.timeline = "Please select a timeline"
+        isValid = false
+      }
+    } else if (step === 3) {
+      if (!formData.name.trim()) {
+        newErrors.name = "Name is required"
+        isValid = false
+      }
+      if (!formData.email.trim()) {
+        newErrors.email = "Email is required"
+        isValid = false
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = "Please enter a valid email"
+        isValid = false
+      }
+      if (!formData.phone.trim()) {
+        newErrors.phone = "Phone number is required"
+        isValid = false
+      }
+      if (!formData.message.trim()) {
+        newErrors.message = "Message is required"
+        isValid = false
+      }
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
+  const nextStep = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep((prev) => prev + 1)
+      window.scrollTo(0, 0)
+    }
+  }
+
+  const prevStep = () => {
+    setCurrentStep((prev) => prev - 1)
+    window.scrollTo(0, 0)
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault()
+
+    if (!validateStep(3)) {
+      return
+    }
+
+    setIsSubmitting(true)
 
     try {
       // Format submission data
@@ -46,7 +173,12 @@ export default function Contact() {
         message: formData.message,
         subject: `New Contact Form Submission from ${formData.name}`,
         from_name: "Ony Group Website",
-      };
+        businessName: formData.businessName,
+        website: formData.website,
+        industry: formData.industry,
+        timeline: formData.timeline,
+        services: formData.services.join(", "),
+      }
 
       // 1. Attempt to send data to Web3Forms
       try {
@@ -59,217 +191,372 @@ export default function Contact() {
             access_key: "b4aa257b-307a-4313-88b8-414e2203aedf",
             ...submissionData,
           }),
-        });
+        })
 
         if (!web3FormsResponse.ok) {
-          const errorText = await web3FormsResponse.text();
-          console.error('Web3Forms response not OK:', web3FormsResponse.status, errorText);
-          throw new Error(`Web3Forms submission failed: ${web3FormsResponse.status}`);
+          const errorText = await web3FormsResponse.text()
+          console.error("Web3Forms response not OK:", web3FormsResponse.status, errorText)
+          throw new Error(`Web3Forms submission failed: ${web3FormsResponse.status}`)
         }
 
-        const web3FormsData = await web3FormsResponse.json();
+        const web3FormsData = await web3FormsResponse.json()
 
         if (!web3FormsData.success) {
-          throw new Error("Web3Forms submission failed");
+          throw new Error("Web3Forms submission failed")
         }
-
-        // toast({
-        //   title: "Message Sent",
-        //   description: "Your message has been sent successfully.",
-        //   variant: "default",
-        // });
       } catch (web3FormsError) {
-        console.error('Web3Forms submission error:', web3FormsError);
-        // toast({
-        //   title: "Message sending failed",
-        //   description: "Could not send email message, but proceeding with Lark.",
-        //   variant: "destructive",
-        // });
+        console.error("Web3Forms submission error:", web3FormsError)
       }
 
       // 2. Send data to Lark regardless of Web3Forms success
-      const larkResponse = await fetch('/api/lark-submit-ocg-contact-page', {
-        method: 'POST',
+      const larkResponse = await fetch("/api/lark-submit-ocg-contact-page", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(submissionData),
-      });
+      })
 
       if (!larkResponse.ok) {
-        const larkErrorText = await larkResponse.text();
-        throw new Error(`Lark submission failed: ${larkErrorText}`);
+        const larkErrorText = await larkResponse.text()
+        throw new Error(`Lark submission failed: ${larkErrorText}`)
       }
 
-      const larkResult = await larkResponse.json();
+      const larkResult = await larkResponse.json()
 
       if (!larkResult.success) {
-        throw new Error("Lark submission failed");
+        throw new Error("Lark submission failed")
       }
 
-      toast({
-        title: "Message Sent Successfully",
-        description: "Thank you for reaching out! We'll get back to you as soon as possible.",
-        variant: "default",
-      });
-
-      // Reset form after successful submission
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
+      // Move to success step
+      setCurrentStep(4)
+      window.scrollTo(0, 0)
     } catch (error) {
-      console.error('Error during form submission:', error);
+      console.error("Error during form submission:", error)
       toast({
         title: "Error",
         description: "An error occurred while submitting your message. Please try again.",
-        variant: "destructive"
-      });
+        variant: "destructive",
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
+
+  // Render different steps based on currentStep
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold">Which of these solutions are you interested in?</h2>
+              <p className="mt-2 text-muted-foreground">Select all that apply.</p>
+              {errors.services && <p className="text-red-500 text-sm mt-1">{errors.services}</p>}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                "Website Development",
+                "App Development",
+                "Online Store",
+                "POS System Implementation",
+                "Contact Centre",
+                "CRM",
+                "AI Integration",
+                "Unified Inbox",
+              ].map((service) => (
+                <div key={service} className="flex items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <Checkbox
+                    id={service.replace(/\s+/g, "-").toLowerCase()}
+                    checked={formData.services.includes(service)}
+                    onCheckedChange={() => handleServiceToggle(service)}
+                  />
+                  <Label htmlFor={service.replace(/\s+/g, "-").toLowerCase()} className="font-normal cursor-pointer">
+                    {service}
+                  </Label>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end">
+              <Button onClick={nextStep} className="w-full sm:w-auto">
+                Continue <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )
+
+      case 2:
+        return (
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold">Business & Project Basics</h2>
+              <p className="mt-2 text-muted-foreground">Tell us more about your business and project requirements.</p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="businessName">
+                  Business Name <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="businessName"
+                  name="businessName"
+                  value={formData.businessName}
+                  onChange={handleChange}
+                  placeholder="Your business name"
+                />
+                {errors.businessName && <p className="text-red-500 text-sm">{errors.businessName}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="website">Current Website URL (Optional)</Label>
+                <Input
+                  id="website"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  placeholder="https://example.com"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="industry">
+                  Industry <span className="text-red-500">*</span>
+                </Label>
+                <Select value={formData.industry} onValueChange={(value) => handleSelectChange("industry", value)}>
+                  <SelectTrigger id="industry">
+                    <SelectValue placeholder="Select an industry" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="automotive">Automotive</SelectItem>
+                    <SelectItem value="construction">Construction</SelectItem>
+                    <SelectItem value="education">education</SelectItem>
+                    <SelectItem value="education">Education</SelectItem>
+                    <SelectItem value="energy & utilities">Energy & Utilities</SelectItem>
+                    <SelectItem value="financial services">Financial Services</SelectItem>
+                    <SelectItem value="healthcare">Healthcare</SelectItem>
+                    <SelectItem value="hospitality">Hospitality</SelectItem>
+                    <SelectItem value="information technology">Information Technology</SelectItem>
+                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                    <SelectItem value="media & entertainment">Media & Entertainment</SelectItem>
+                    <SelectItem value="professional services">Professional Services</SelectItem>
+                    <SelectItem value="real estate">Real Estate</SelectItem>
+                    <SelectItem value="retail">Retail</SelectItem>
+                    <SelectItem value="services (e.g. salons, clinics)">Services (e.g. salons, clinics)</SelectItem>
+                    <SelectItem value="telecommunications">Telecommunications</SelectItem>
+                    <SelectItem value="transportation & logistics">Transportation & Logistics</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.industry && <p className="text-red-500 text-sm">{errors.industry}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="timeline">
+                  Project Timeline <span className="text-red-500">*</span>
+                </Label>
+                <Select value={formData.timeline} onValueChange={(value) => handleSelectChange("timeline", value)}>
+                  <SelectTrigger id="timeline">
+                    <SelectValue placeholder="Select a timeline" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="asap">ASAP</SelectItem>
+                    <SelectItem value="within 1-3 months">Within 1-3 months</SelectItem>
+                    <SelectItem value="3-6 months">3-6 months</SelectItem>
+                    <SelectItem value="6+ months">6+ months</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.timeline && <p className="text-red-500 text-sm">{errors.timeline}</p>}
+              </div>
+            </div>
+
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={prevStep}>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              </Button>
+              <Button onClick={nextStep}>
+                Continue <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )
+
+      case 3:
+        return (
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold">Contact Information</h2>
+              <p className="mt-2 text-muted-foreground">How can we reach you?</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">
+                  Full Name <span className="text-red-500">*</span>
+                </Label>
+                <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" />
+                {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">
+                  Email <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="john@example.com"
+                />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">
+                  Phone Number <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+254 700 000 000"
+                />
+                {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">
+                  Message <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Tell us about your project..."
+                  className="min-h-[150px]"
+                />
+                {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
+              </div>
+
+              <div className="flex justify-between pt-4">
+                <Button type="button" variant="outline" onClick={prevStep}>
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                </Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <span className="animate-pulse">Sending...</span>
+                  ) : (
+                    <>
+                      Submit <Send className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
+        )
+
+      case 4:
+        return (
+          <div className="text-center space-y-6 py-8">
+            <div className="mx-auto w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center">
+              <CheckCircle className="h-8 w-8 text-orange-500" />
+            </div>
+
+            <h2 className="text-3xl font-bold">Thanks! We'll be in touch within 24 hours.</h2>
+
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+              Our team is reviewing your information and will reach out with a custom plan tailored to your needs.
+            </p>
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  // Progress indicator
+  const renderProgressIndicator = () => {
+    return (
+      <div className="mb-12">
+        <div className="flex justify-between items-center">
+          {[1, 2, 3, 4].map((step) => (
+            <div key={step} className="flex flex-col items-center">
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
+                  currentStep === step
+                    ? "border-orange-500 bg-orange-500 text-white"
+                    : currentStep > step
+                      ? "border-orange-500 bg-white text-orange-500"
+                      : "border-gray-300 bg-white text-gray-400"
+                }`}
+              >
+                {step}
+              </div>
+              <span
+                className={`mt-2 text-sm ${
+                  currentStep === step
+                    ? "text-orange-500 font-medium"
+                    : currentStep > step
+                      ? "text-gray-700"
+                      : "text-gray-400"
+                }`}
+              >
+                {step === 1 ? "Services" : step === 2 ? "Business" : step === 3 ? "Contact" : "Details"}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="relative mt-2">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200"></div>
+          <div
+            className="absolute top-0 left-0 h-1 bg-orange-500 transition-all duration-300"
+            style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+          ></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
-      <section className="py-24 md:py-32">
+      <section className="py-12 md:py-16">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Contact Us</h1>
-            <p className="mt-6 text-lg text-muted-foreground">
-              Get in touch with our team to discuss how we can help transform your business.
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Ready to Grow? Let's Build Your Digitally Connected Commerce Business
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Tell us what you need and our team will reach out within 24 hours with a custom plan—no obligation.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="border-t py-24 md:py-32">
+      <section className="pb-24 md:pb-32">
         <div className="container">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div>
-              <h2 className="text-3xl font-bold">Get in Touch</h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Have a question or want to discuss a project? Fill out the form and we'll get back to you shortly.
-              </p>
+          <div className="mx-auto max-w-3xl">
+            {renderProgressIndicator()}
 
-              <div className="mt-8 space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <MapPin className="mr-2 h-5 w-5" />
-                      Visit Us
-                    </CardTitle>
-                    <CardDescription>
-                      Nairobi, Kenya
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Phone className="mr-2 h-5 w-5" />
-                      Call Us
-                    </CardTitle>
-                    <CardDescription>
-                      <a href="tel:+254011055189" className="hover:underline">+254 011 055 189</a>
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Mail className="mr-2 h-5 w-5" />
-                      Email Us
-                    </CardTitle>
-                    <CardDescription>
-                      <a href="mailto:connect@onygroup.com" className="hover:underline">connect@onygroup.com</a>
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </div>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Send us a Message</CardTitle>
-                <CardDescription>
-                  Fill out the form below and we'll get back to you as soon as possible.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="John Doe"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      type="email"
-                      required
-                      placeholder="john@example.com"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      type="tel"
-                      placeholder="+254 700 000 000"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      placeholder="Tell us about your project..."
-                      className="min-h-[150px]"
-                    />
-                  </div>
-
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? (
-                      <>
-                        <span className="animate-pulse">Sending...</span>
-                      </>
-                    ) : (
-                      <>
-                        Send Message
-                        <Send className="ml-2 h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-6 sm:p-8">{renderStep()}</CardContent>
             </Card>
+
+            <div className="mt-6 text-center text-sm text-muted-foreground">
+              We respect your privacy. Your information stays with us and is only used to build your proposal.
+            </div>
           </div>
         </div>
       </section>
     </>
-  );
+  )
 }
