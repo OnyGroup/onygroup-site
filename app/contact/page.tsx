@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Send, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Link from "next/link"
 import dynamic from "next/dynamic"
 
 // Dynamically import the phone input component to avoid SSR issues
@@ -41,7 +42,10 @@ export default function Contact() {
     name: "",
     email: "",
     phone: "",
-    businessDescription: "", // Renamed from message to businessDescription
+    businessDescription: "",
+
+    // Consent
+    consentGiven: false,
   })
 
   const [errors, setErrors] = useState({
@@ -52,7 +56,8 @@ export default function Contact() {
     name: "",
     email: "",
     phone: "",
-    businessDescription: "", // Renamed from message to businessDescription
+    businessDescription: "",
+    consentGiven: "",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -97,6 +102,21 @@ export default function Contact() {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
+      }))
+    }
+  }
+
+  const handleConsentChange = (checked: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      consentGiven: checked,
+    }))
+
+    // Clear error when field is edited
+    if (errors.consentGiven) {
+      setErrors((prev) => ({
+        ...prev,
+        consentGiven: "",
       }))
     }
   }
@@ -162,6 +182,10 @@ export default function Contact() {
         newErrors.businessDescription = "Business description is required"
         isValid = false
       }
+      if (!formData.consentGiven) {
+        newErrors.consentGiven = "You must agree to the privacy policy"
+        isValid = false
+      }
     }
 
     setErrors(newErrors)
@@ -195,7 +219,7 @@ export default function Contact() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        businessDescription: formData.businessDescription, // Include businessDescription
+        businessDescription: formData.businessDescription,
         subject: `New Contact Form Submission from ${formData.name}`,
         from_name: "Ony Group Website",
         businessName: formData.businessName,
@@ -203,6 +227,7 @@ export default function Contact() {
         industry: formData.industry,
         timeline: formData.timeline,
         services: Array.isArray(formData.services) ? formData.services.join(", ") : formData.services,
+        consentGiven: formData.consentGiven,
       }
 
       // 1. Attempt to send data to Web3Forms
@@ -291,7 +316,7 @@ export default function Contact() {
                 "AI Integration",
                 "Unified Inbox",
               ].map((service) => (
-                <div key={service} className="flex items-start space-x-3 space-y-0 rounded-md border p-4">
+                <div key={service} className="flex items-start space-x-3 space-y-0 rounded-md border p-4 bg-white">
                   <Checkbox
                     id={service.replace(/\s+/g, "-").toLowerCase()}
                     checked={formData.services.includes(service)}
@@ -331,6 +356,7 @@ export default function Contact() {
                   value={formData.businessName}
                   onChange={handleChange}
                   placeholder="Your business name"
+                  className="bg-white"
                 />
                 {errors.businessName && <p className="text-red-500 text-sm">{errors.businessName}</p>}
               </div>
@@ -343,6 +369,7 @@ export default function Contact() {
                   value={formData.website}
                   onChange={handleChange}
                   placeholder="https://example.com"
+                  className="bg-white"
                 />
               </div>
 
@@ -351,7 +378,7 @@ export default function Contact() {
                   Industry <span className="text-red-500">*</span>
                 </Label>
                 <Select value={formData.industry} onValueChange={(value) => handleSelectChange("industry", value)}>
-                  <SelectTrigger id="industry">
+                  <SelectTrigger id="industry" className="bg-white">
                     <SelectValue placeholder="Select an industry" />
                   </SelectTrigger>
                   <SelectContent>
@@ -382,7 +409,7 @@ export default function Contact() {
                   Project Timeline <span className="text-red-500">*</span>
                 </Label>
                 <Select value={formData.timeline} onValueChange={(value) => handleSelectChange("timeline", value)}>
-                  <SelectTrigger id="timeline">
+                  <SelectTrigger id="timeline" className="bg-white">
                     <SelectValue placeholder="Select a timeline" />
                   </SelectTrigger>
                   <SelectContent>
@@ -420,7 +447,14 @@ export default function Contact() {
                 <Label htmlFor="name">
                   Full Name <span className="text-red-500">*</span>
                 </Label>
-                <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" />
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="John Doe"
+                  className="bg-white"
+                />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
               </div>
 
@@ -435,6 +469,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="john@example.com"
+                  className="bg-white"
                 />
                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
@@ -471,9 +506,29 @@ export default function Contact() {
                   value={formData.businessDescription}
                   onChange={handleChange}
                   placeholder="Tell us about your business, what you do, and what products or services you offer..."
-                  className="min-h-[150px]"
+                  className="min-h-[150px] bg-white"
                 />
                 {errors.businessDescription && <p className="text-red-500 text-sm">{errors.businessDescription}</p>}
+              </div>
+
+              <div className="space-y-2 pt-4">
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="consent"
+                    checked={formData.consentGiven}
+                    onCheckedChange={(checked) => handleConsentChange(checked as boolean)}
+                  />
+                  <Label htmlFor="consent" className="text-sm font-normal leading-tight">
+                    By submitting this, you agree that we may use your info to contact you about your request. We'll
+                    keep your details safe, never share them without your permission, and you can unsubscribe anytime.
+                    See our{" "}
+                    <Link href="/privacy-policy" className="text-orange-600 hover:underline">
+                      Privacy Policy
+                    </Link>{" "}
+                    for more details.
+                  </Label>
+                </div>
+                {errors.consentGiven && <p className="text-red-500 text-sm">{errors.consentGiven}</p>}
               </div>
 
               <div className="flex justify-between pt-4">
@@ -560,20 +615,20 @@ export default function Contact() {
 
   return (
     <>
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 bg-[#FFF5F2]">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-gray-800">
               Ready to Grow? Let's Build Your Digitally Connected Commerce Business
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="mt-4 text-lg text-gray-600">
               Tell us what you need and our team will reach out within 24 hours with a custom plan—no obligation.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="pb-24 md:pb-32">
+      <section className="pb-24 md:pb-32 bg-[#FFF5F2]">
         <div className="container">
           <div className="mx-auto max-w-3xl">
             {renderProgressIndicator()}
@@ -582,7 +637,7 @@ export default function Contact() {
               <CardContent className="p-6 sm:p-8">{renderStep()}</CardContent>
             </Card>
 
-            <div className="mt-6 text-center text-sm text-muted-foreground">
+            <div className="mt-6 text-center text-sm text-gray-600">
               We respect your privacy. Your information stays with us and is only used to build your proposal.
             </div>
           </div>

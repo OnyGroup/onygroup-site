@@ -95,6 +95,9 @@ ${formData.businessDescription || "Not provided"}
 SERVICES REQUESTED:
 ${formData.services ? formData.services : "No services selected"}
 
+CONSENT:
+Privacy Policy Accepted: ${formData.consentGiven ? "Yes" : "No"}
+
 Submission time: ${new Date().toLocaleString()}`
 
       const messageResponse = await fetch(
