@@ -216,8 +216,8 @@ export default function PrivacyPolicyPage() {
             </nav>
           </div>
 
-          {/* Main Content - 6 columns centered on desktop, full width on mobile */}
-          <div className="col-span-12 lg:col-span-6 bg-white border border-gray-200 rounded-lg shadow-sm p-6 mt-6 mb-6">
+          {/* Main Content - 9 columns on desktop (expanded to fill the remaining width), full width on mobile */}
+          <div className="col-span-12 lg:col-span-9 bg-white border border-gray-200 rounded-lg shadow-sm p-6 mt-6 mb-6">
             <div id="what-is" className="mb-8 scroll-mt-6">
               <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
               <h2 className="text-2xl font-semibold mb-4">What is the Privacy Policy and what does it cover?</h2>
@@ -303,18 +303,20 @@ export default function PrivacyPolicyPage() {
                 )}
               </div>
 
-              <div className="border border-gray-200 rounded-lg mb-6">
-                <button className="flex items-center justify-between w-full p-4 text-left">
-                  <span className="font-medium">What Products does this Policy cover?</span>
-                  <ChevronDown size={20} />
-                </button>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="border border-gray-200 rounded-lg">
+                  <button className="flex items-center justify-between w-full p-4 text-left">
+                    <span className="font-medium">What Products does this Policy cover?</span>
+                    <ChevronDown size={20} />
+                  </button>
+                </div>
 
-              <div className="border border-gray-200 rounded-lg mb-6">
-                <button className="flex items-center justify-between w-full p-4 text-left">
-                  <span className="font-medium">Learn more in Privacy Centre about managing your privacy</span>
-                  <ChevronDown size={20} />
-                </button>
+                <div className="border border-gray-200 rounded-lg">
+                  <button className="flex items-center justify-between w-full p-4 text-left">
+                    <span className="font-medium">Learn more in Privacy Centre about managing your privacy</span>
+                    <ChevronDown size={20} />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -346,50 +348,54 @@ export default function PrivacyPolicyPage() {
                 <Image
                   src="/connected-with-privacy.png"
                   alt="Privacy illustration"
-                  width={600}
-                  height={300}
+                  width={800}
+                  height={400}
                   className="w-full rounded-lg"
                 />
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-xl font-medium">Information You Provide Directly</h3>
-                <p>We collect various types of information that you provide directly to us:</p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>
-                    <span className="font-medium">Contact & Identity:</span> Name, email, phone, business name,
-                    industry, etc.
-                  </li>
-                  <li>
-                    <span className="font-medium">Project Details:</span> Service selections, timelines, "Additional
-                    Details" messages.
-                  </li>
-                  <li>
-                    <span className="font-medium">Communications:</span> Survey responses, support inquiries, newsletter
-                    sign‑ups.
-                  </li>
-                </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-medium">Information You Provide Directly</h3>
+                  <p>We collect various types of information that you provide directly to us:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>
+                      <span className="font-medium">Contact & Identity:</span> Name, email, phone, business name,
+                      industry, etc.
+                    </li>
+                    <li>
+                      <span className="font-medium">Project Details:</span> Service selections, timelines, "Additional
+                      Details" messages.
+                    </li>
+                    <li>
+                      <span className="font-medium">Communications:</span> Survey responses, support inquiries,
+                      newsletter sign‑ups.
+                    </li>
+                  </ul>
+                </div>
 
-                <h3 className="text-xl font-medium mt-6">Information from Your Use of Our Services</h3>
-                <p>We also collect information about how you use our services:</p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>
-                    <span className="font-medium">Technical Data:</span> IP address, device identifiers, browser
-                    type/version, pages visited, referring URLs.
-                  </li>
-                  <li>
-                    <span className="font-medium">Usage Data:</span> Features used, click‑streams, form‑fill progress.
-                  </li>
-                </ul>
+                <div className="space-y-4">
+                  <h3 className="text-xl font-medium">Information from Your Use of Our Services</h3>
+                  <p>We also collect information about how you use our services:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>
+                      <span className="font-medium">Technical Data:</span> IP address, device identifiers, browser
+                      type/version, pages visited, referring URLs.
+                    </li>
+                    <li>
+                      <span className="font-medium">Usage Data:</span> Features used, click‑streams, form‑fill progress.
+                    </li>
+                  </ul>
 
-                <h3 className="text-xl font-medium mt-6">Information from Third Parties</h3>
-                <p>We may receive information about you from:</p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>
-                    <span className="font-medium">Partners & Service Providers:</span> Analytics data, advertising
-                    partners, CRM platforms.
-                  </li>
-                </ul>
+                  <h3 className="text-xl font-medium mt-6">Information from Third Parties</h3>
+                  <p>We may receive information about you from:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>
+                      <span className="font-medium">Partners & Service Providers:</span> Analytics data, advertising
+                      partners, CRM platforms.
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -417,30 +423,42 @@ export default function PrivacyPolicyPage() {
                 </button>
               </div>
 
-              <p className="mb-4">We use your information to:</p>
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>
-                  <span className="font-medium">Provide & Improve Services:</span> Respond to requests, deliver quotes,
-                  run campaigns, refine platform features.
-                </li>
-                <li>
-                  <span className="font-medium">Marketing & Communications:</span> Send updates and promotions—tailored
-                  to your interests in our products and services.
-                </li>
-                <li>
-                  <span className="font-medium">Security & Compliance:</span> Detect fraud, enforce our terms, meet
-                  legal requirements.
-                </li>
-                <li>
-                  <span className="font-medium">Analytics & Insights:</span> Measure performance, understand usage
-                  trends, optimize user experience.
-                </li>
-              </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                <div>
+                  <p className="mb-4">We use your information to:</p>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">Provide & Improve Services:</span> Respond to requests, deliver
+                      quotes, run campaigns, refine platform features.
+                    </li>
+                    <li>
+                      <span className="font-medium">Marketing & Communications:</span> Send updates and
+                      promotions—tailored to your interests in our products and services.
+                    </li>
+                    <li>
+                      <span className="font-medium">Security & Compliance:</span> Detect fraud, enforce our terms, meet
+                      legal requirements.
+                    </li>
+                    <li>
+                      <span className="font-medium">Analytics & Insights:</span> Measure performance, understand usage
+                      trends, optimize user experience.
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-medium mb-3">Did you know?</h4>
+                  <p className="text-sm text-gray-700">
+                    You can control how we use your data for marketing purposes through your account settings. Visit
+                    your preferences page to manage what types of communications you receive from us.
+                  </p>
+                </div>
+              </div>
 
               <h3 className="text-xl font-medium mb-3">Our products/platforms</h3>
               <p className="mb-4">This includes targeted communications about our Yapa ecosystem modules, such as:</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
                 <div className="border border-gray-200 rounded-lg p-4">
                   <h4 className="font-medium mb-1">Yapa Business</h4>
                   <p className="text-sm text-gray-600">CRM, customer management, unified inbox</p>
@@ -510,95 +528,153 @@ export default function PrivacyPolicyPage() {
                 </button>
               </div>
 
-              <p className="mb-4">
-                We do <strong>not</strong> sell personal data. We may share with:
-              </p>
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>
-                  <span className="font-medium">Service Providers:</span> Email platforms, analytics providers, payment
-                  processors, under strict confidentiality.
-                </li>
-                <li>
-                  <span className="font-medium">Subsidiaries & Partners:</span> To coordinate marketing and service
-                  delivery across Ony Group entities (e.g., Yapa, Ngoks).
-                </li>
-                <li>
-                  <span className="font-medium">Legal & Safety:</span> Law enforcement or regulators when required by
-                  law or to protect rights and safety.
-                </li>
-                <li>
-                  <span className="font-medium">Business Transfers:</span> In connection with mergers, acquisitions, or
-                  asset sales, under confidentiality terms.
-                </li>
-              </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    We do <strong>not</strong> sell personal data. We may share with:
+                  </p>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">Service Providers:</span> Email platforms, analytics providers,
+                      payment processors, under strict confidentiality.
+                    </li>
+                    <li>
+                      <span className="font-medium">Subsidiaries & Partners:</span> To coordinate marketing and service
+                      delivery across Ony Group entities (e.g., Yapa, Ngoks).
+                    </li>
+                    <li>
+                      <span className="font-medium">Legal & Safety:</span> Law enforcement or regulators when required
+                      by law or to protect rights and safety.
+                    </li>
+                    <li>
+                      <span className="font-medium">Business Transfers:</span> In connection with mergers, acquisitions,
+                      or asset sales, under confidentiality terms.
+                    </li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">
-                When we share information with third-party service providers, we require them to use your information in
-                accordance with our instructions and terms or with your express permission. We take steps to ensure that
-                these third parties handle your information with the same level of care as we do.
-              </p>
+                <div>
+                  <p className="mb-4">
+                    When we share information with third-party service providers, we require them to use your
+                    information in accordance with our instructions and terms or with your express permission. We take
+                    steps to ensure that these third parties handle your information with the same level of care as we
+                    do.
+                  </p>
+
+                  <p className="mb-4">
+                    All third parties that process data on our behalf are subject to data processing agreements that
+                    ensure they:
+                  </p>
+
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>Process the data only for specified purposes</li>
+                    <li>Maintain appropriate security measures</li>
+                    <li>Do not retain data longer than necessary</li>
+                    <li>Assist us in responding to data subject requests</li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <div id="companies" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">How do the Ony Companies work together?</h2>
 
-              <p className="mb-4">
-                Ony Group Limited is part of a family of companies that work together to provide services to our users
-                worldwide. These companies include:
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    Ony Group Limited is part of a family of companies that work together to provide services to our
+                    users worldwide. These companies include:
+                  </p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>Ony Group Limited (Kenya) - Our parent company</li>
-                <li>Yapa Technologies Ltd - Our technology and product development arm</li>
-                <li>Ngoks Agricultural Solutions - Our agricultural technology division</li>
-                <li>Ony Payments Ltd - Our financial services entity</li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>Ony Group Limited (Kenya) - Our parent company</li>
+                    <li>Yapa Technologies Ltd - Our technology and product development arm</li>
+                    <li>Ngoks Agricultural Solutions - Our agricultural technology division</li>
+                    <li>Ony Payments Ltd - Our financial services entity</li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">
-                We share infrastructure, systems, and technology with these companies to provide an integrated
-                experience that enables better services. For example, this allows us to:
-              </p>
+                <div>
+                  <p className="mb-4">
+                    We share infrastructure, systems, and technology with these companies to provide an integrated
+                    experience that enables better services. For example, this allows us to:
+                  </p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>Provide seamless, consistent, and quality services across Ony products</li>
-                <li>Show relevant product recommendations across our ecosystem</li>
-                <li>Develop and test new features more efficiently</li>
-                <li>Address harmful or illegal activity, security concerns, and abuse across our platforms</li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>Provide seamless, consistent, and quality services across Ony products</li>
+                    <li>Show relevant product recommendations across our ecosystem</li>
+                    <li>Develop and test new features more efficiently</li>
+                    <li>Address harmful or illegal activity, security concerns, and abuse across our platforms</li>
+                  </ul>
 
-              <p className="mb-4">
-                All Ony companies follow this Privacy Policy and maintain the same high standards of data protection.
-              </p>
+                  <p className="mb-4">
+                    All Ony companies follow this Privacy Policy and maintain the same high standards of data
+                    protection.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div id="manage" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">How can you manage or delete your information?</h2>
 
-              <p className="mb-4">We provide you with various tools to control your information:</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">We provide you with various tools to control your information:</p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>
-                  <span className="font-medium">Access & Update:</span> You can access and update most of your personal
-                  information directly through your account settings. If you cannot access certain information there,
-                  you can contact us to request access.
-                </li>
-                <li>
-                  <span className="font-medium">Data Portability:</span> You can request a copy of your data in a
-                  structured, commonly used, and machine-readable format.
-                </li>
-                <li>
-                  <span className="font-medium">Deletion:</span> You can delete your account or specific information at
-                  any time. When you delete your account, we remove your personal information, though some information
-                  may remain in backup copies for a limited period.
-                </li>
-                <li>
-                  <span className="font-medium">Marketing Preferences:</span> You can opt out of marketing
-                  communications by using the "unsubscribe" link in our emails or adjusting your communication
-                  preferences in your account settings.
-                </li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">Access & Update:</span> You can access and update most of your
+                      personal information directly through your account settings. If you cannot access certain
+                      information there, you can contact us to request access.
+                    </li>
+                    <li>
+                      <span className="font-medium">Data Portability:</span> You can request a copy of your data in a
+                      structured, commonly used, and machine-readable format.
+                    </li>
+                    <li>
+                      <span className="font-medium">Deletion:</span> You can delete your account or specific information
+                      at any time. When you delete your account, we remove your personal information, though some
+                      information may remain in backup copies for a limited period.
+                    </li>
+                    <li>
+                      <span className="font-medium">Marketing Preferences:</span> You can opt out of marketing
+                      communications by using the "unsubscribe" link in our emails or adjusting your communication
+                      preferences in your account settings.
+                    </li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <h3 className="text-lg font-medium mb-3">Privacy Controls</h3>
+                  <p className="mb-4">Visit your account settings to manage your privacy preferences:</p>
+                  <ul className="space-y-3">
+                    <li className="flex items-center">
+                      <div className="bg-blue-100 rounded-full p-2 mr-3">
+                        <Settings className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <span>Control what data we use for recommendations</span>
+                    </li>
+                    <li className="flex items-center">
+                      <div className="bg-blue-100 rounded-full p-2 mr-3">
+                        <Shield className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <span>Manage your marketing preferences</span>
+                    </li>
+                    <li className="flex items-center">
+                      <div className="bg-blue-100 rounded-full p-2 mr-3">
+                        <FileText className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <span>Download a copy of your data</span>
+                    </li>
+                  </ul>
+                  <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                    Access Privacy Settings
+                  </button>
+                </div>
+              </div>
+
+              <p className="mt-6 mb-4">
                 To exercise these rights, visit your account settings or contact our privacy team at
                 privacy@ony-group.com.
               </p>
@@ -607,169 +683,252 @@ export default function PrivacyPolicyPage() {
             <div id="retention" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">How long do we keep your information for?</h2>
 
-              <p className="mb-4">
-                We retain your personal information only as long as necessary to provide you with our services and for
-                legitimate and essential business purposes, such as:
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    We retain your personal information only as long as necessary to provide you with our services and
+                    for legitimate and essential business purposes, such as:
+                  </p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>Maintaining the performance and functionality of our services</li>
-                <li>Making data-driven business decisions about new features and offerings</li>
-                <li>Complying with our legal obligations</li>
-                <li>Resolving disputes</li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>Maintaining the performance and functionality of our services</li>
+                    <li>Making data-driven business decisions about new features and offerings</li>
+                    <li>Complying with our legal obligations</li>
+                    <li>Resolving disputes</li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">The retention periods depend on the type of information and its purpose:</p>
+                <div>
+                  <p className="mb-4">The retention periods depend on the type of information and its purpose:</p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>
-                  <span className="font-medium">Account information:</span> Retained while your account is active or as
-                  needed to provide services
-                </li>
-                <li>
-                  <span className="font-medium">Transaction data:</span> Kept for 7 years to comply with financial
-                  regulations
-                </li>
-                <li>
-                  <span className="font-medium">Communication records:</span> Stored for 2 years after your last
-                  interaction
-                </li>
-                <li>
-                  <span className="font-medium">Usage data:</span> Retained for up to 13 months, then aggregated for
-                  analytics
-                </li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">Account information:</span> Retained while your account is active or
+                      as needed to provide services
+                    </li>
+                    <li>
+                      <span className="font-medium">Transaction data:</span> Kept for 7 years to comply with financial
+                      regulations
+                    </li>
+                    <li>
+                      <span className="font-medium">Communication records:</span> Stored for 2 years after your last
+                      interaction
+                    </li>
+                    <li>
+                      <span className="font-medium">Usage data:</span> Retained for up to 13 months, then aggregated for
+                      analytics
+                    </li>
+                  </ul>
 
-              <p className="mb-4">When we no longer need personal information, we securely delete or anonymize it.</p>
+                  <p className="mb-4">
+                    When we no longer need personal information, we securely delete or anonymize it.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div id="transfer" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">How do we transfer information?</h2>
 
-              <p className="mb-4">
-                Ony Group is a global organization with operations across multiple countries. Your data may be
-                transferred to and stored in servers located outside your jurisdiction, including countries that may
-                have different data protection laws than your own.
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    Ony Group is a global organization with operations across multiple countries. Your data may be
+                    transferred to and stored in servers located outside your jurisdiction, including countries that may
+                    have different data protection laws than your own.
+                  </p>
 
-              <p className="mb-4">
-                When we transfer personal data across borders, we take steps to ensure that your information is
-                protected and transferred according to applicable data protection laws. These measures include:
-              </p>
+                  <p className="mb-4">
+                    When we transfer personal data across borders, we take steps to ensure that your information is
+                    protected and transferred according to applicable data protection laws. These measures include:
+                  </p>
+                </div>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>
-                  <span className="font-medium">Data Transfer Agreements:</span> We implement appropriate safeguards
-                  such as Standard Contractual Clauses approved by relevant authorities.
-                </li>
-                <li>
-                  <span className="font-medium">Security Measures:</span> We use encryption, access controls, and other
-                  technical and organizational measures to protect data during transfer and storage.
-                </li>
-              </ul>
+                <div>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">Data Transfer Agreements:</span> We implement appropriate safeguards
+                      such as Standard Contractual Clauses approved by relevant authorities.
+                    </li>
+                    <li>
+                      <span className="font-medium">Security Measures:</span> We use encryption, access controls, and
+                      other technical and organizational measures to protect data during transfer and storage.
+                    </li>
+                    <li>
+                      <span className="font-medium">Risk Assessments:</span> We conduct regular assessments of countries
+                      where data is transferred to ensure adequate protection.
+                    </li>
+                    <li>
+                      <span className="font-medium">Data Minimization:</span> We limit the personal data transferred to
+                      only what is necessary for the specific purpose.
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <div id="legal" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">How do we respond to legal requests?</h2>
 
-              <p className="mb-4">
-                We access, preserve, and share your information with regulators, law enforcement, or others:
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    We access, preserve, and share your information with regulators, law enforcement, or others:
+                  </p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>In response to a legal request if we have a good-faith belief that the law requires us to do so</li>
-                <li>
-                  When we believe it's necessary to detect, prevent, and address fraud, unauthorized use of our
-                  products, violations of our terms or policies, or other harmful or illegal activity
-                </li>
-                <li>To protect ourselves, you, or others, including as part of investigations</li>
-                <li>In connection with court proceedings, or to comply with legal process</li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      In response to a legal request if we have a good-faith belief that the law requires us to do so
+                    </li>
+                    <li>
+                      When we believe it's necessary to detect, prevent, and address fraud, unauthorized use of our
+                      products, violations of our terms or policies, or other harmful or illegal activity
+                    </li>
+                    <li>To protect ourselves, you, or others, including as part of investigations</li>
+                    <li>In connection with court proceedings, or to comply with legal process</li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">
-                We carefully review each request to ensure it is legally valid, and we may reject requests that are
-                overly broad, vague, or do not comply with legal requirements. When possible and legally permissible, we
-                will notify affected users about requests for their data.
-              </p>
+                <div>
+                  <p className="mb-4">
+                    We carefully review each request to ensure it is legally valid, and we may reject requests that are
+                    overly broad, vague, or do not comply with legal requirements. When possible and legally
+                    permissible, we will notify affected users about requests for their data.
+                  </p>
+
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4">
+                    <h4 className="font-medium mb-2">Transparency Report</h4>
+                    <p className="text-sm text-gray-700">
+                      We publish periodic transparency reports that provide information about the types and volume of
+                      government requests we receive. You can view our latest transparency report on our website.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div id="changes" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">How will you know that the Policy has changed?</h2>
 
-              <p className="mb-4">
-                We may update this Privacy Policy from time to time to reflect changes in our practices, technology,
-                legal requirements, and other factors. When we make changes, we will:
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    We may update this Privacy Policy from time to time to reflect changes in our practices, technology,
+                    legal requirements, and other factors. When we make changes, we will:
+                  </p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>Update the "Effective Date" at the top of this Privacy Policy</li>
-                <li>Post the updated policy on our website and mobile applications</li>
-                <li>For significant changes, provide notice through our services or by other means, such as email</li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>Update the "Effective Date" at the top of this Privacy Policy</li>
+                    <li>Post the updated policy on our website and mobile applications</li>
+                    <li>
+                      For significant changes, provide notice through our services or by other means, such as email
+                    </li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">
-                We encourage you to review the Privacy Policy whenever you access our services to stay informed about
-                our information practices and your privacy rights. Your continued use of our services after any changes
-                to this Privacy Policy constitutes your acceptance of the revised policy.
-              </p>
+                <div>
+                  <p className="mb-4">
+                    We encourage you to review the Privacy Policy whenever you access our services to stay informed
+                    about our information practices and your privacy rights. Your continued use of our services after
+                    any changes to this Privacy Policy constitutes your acceptance of the revised policy.
+                  </p>
+
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                    <h4 className="font-medium mb-2">Policy Version History</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li>April 21, 2025 - Current version</li>
+                      <li>January 15, 2025 - Previous update</li>
+                      <li>June 30, 2024 - Initial policy</li>
+                    </ul>
+                    <a href="#" className="text-blue-600 hover:underline text-sm block mt-2">
+                      View all previous versions
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div id="global" className="mb-8 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">Global data protection compliance</h2>
 
-              <p className="mb-4">
-                While Ony Group Limited is primarily governed by the Data Protection Act of Kenya, we recognize our
-                responsibility to comply with other global data protection regulations when serving users outside Kenya.
-                We have implemented measures to ensure compliance with:
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-4">
+                    While Ony Group Limited is primarily governed by the Data Protection Act of Kenya, we recognize our
+                    responsibility to comply with other global data protection regulations when serving users outside
+                    Kenya. We have implemented measures to ensure compliance with:
+                  </p>
 
-              <ul className="list-disc pl-6 space-y-2 mb-6">
-                <li>
-                  <span className="font-medium">GDPR (European Union):</span> For EU residents, we uphold the rights and
-                  protections granted under the General Data Protection Regulation, including data subject access
-                  rights, data portability, and the right to be forgotten.
-                </li>
-                <li>
-                  <span className="font-medium">CCPA/CPRA (California):</span> We respect the privacy rights of
-                  California residents as outlined in the California Consumer Privacy Act and the California Privacy
-                  Rights Act.
-                </li>
-                <li>
-                  <span className="font-medium">POPIA (South Africa):</span> We comply with the Protection of Personal
-                  Information Act for South African users.
-                </li>
-                <li>
-                  <span className="font-medium">Other Regional Regulations:</span> We monitor and adapt to emerging
-                  privacy regulations in other jurisdictions where our users are located.
-                </li>
-              </ul>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">GDPR (European Union):</span> For EU residents, we uphold the rights
+                      and protections granted under the General Data Protection Regulation, including data subject
+                      access rights, data portability, and the right to be forgotten.
+                    </li>
+                    <li>
+                      <span className="font-medium">CCPA/CPRA (California):</span> We respect the privacy rights of
+                      California residents as outlined in the California Consumer Privacy Act and the California Privacy
+                      Rights Act.
+                    </li>
+                  </ul>
+                </div>
 
-              <p className="mb-4">
-                This approach allows us to provide consistent privacy protections to all our users while respecting
-                regional variations in data protection requirements. If you have specific questions about how we comply
-                with data protection laws in your region, please contact our privacy team.
-              </p>
+                <div>
+                  <ul className="list-disc pl-6 space-y-2 mb-6">
+                    <li>
+                      <span className="font-medium">POPIA (South Africa):</span> We comply with the Protection of
+                      Personal Information Act for South African users.
+                    </li>
+                    <li>
+                      <span className="font-medium">Other Regional Regulations:</span> We monitor and adapt to emerging
+                      privacy regulations in other jurisdictions where our users are located.
+                    </li>
+                  </ul>
+
+                  <p className="mb-4">
+                    This approach allows us to provide consistent privacy protections to all our users while respecting
+                    regional variations in data protection requirements. If you have specific questions about how we
+                    comply with data protection laws in your region, please contact our privacy team.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div id="contact" className="mt-12 border-t border-gray-200 pt-6 scroll-mt-6">
               <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
-              <p className="mb-2">For questions or to exercise your rights, contact us at:</p>
-              <ul className="list-disc pl-6 mb-4 space-y-1">
-                <li>
-                  <span className="font-medium">Email:</span> privacy@ony‑group.com
-                </li>
-                <li>
-                  <span className="font-medium">Address:</span> Ony Group Limited, Syokimau, Nairobi, Kenya
-                </li>
-              </ul>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <p className="mb-2">For questions or to exercise your rights, contact us at:</p>
+                  <ul className="list-disc pl-6 mb-4 space-y-1">
+                    <li>
+                      <span className="font-medium">Email:</span> privacy@ony‑group.com
+                    </li>
+                    <li>
+                      <span className="font-medium">Address:</span> Ony Group Limited, Syokimau, Nairobi, Kenya
+                    </li>
+                    <li>
+                      <span className="font-medium">Phone:</span> +254 700 123 456
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h3 className="font-medium mb-2">Data Protection Officer</h3>
+                  <p className="text-sm mb-3">
+                    You can also contact our Data Protection Officer directly for any privacy-related concerns:
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Email:</span> dpo@ony-group.com
+                  </p>
+                </div>
+              </div>
+
               <p className="mt-6 text-sm text-gray-600">
                 By using our services, you acknowledge you have read and agree to this Privacy Policy.
               </p>
             </div>
           </div>
-
-          {/* Right sidebar or empty column for balance - 3 columns on desktop, hidden on mobile */}
-          <div className="hidden lg:block lg:col-span-3"></div>
         </div>
       </div>
     </div>
