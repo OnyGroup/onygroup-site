@@ -12,6 +12,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Send, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import dynamic from "next/dynamic"
+
+// Dynamically import the phone input component to avoid SSR issues
+const PhoneInput = dynamic(() => import("react-phone-input-2"), {
+  ssr: false,
+  loading: () => <div className="h-10 w-full bg-gray-100 animate-pulse rounded-md"></div>,
+})
+
+// Import the CSS for the phone input
+import "react-phone-input-2/lib/style.css"
 
 export default function Contact() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -31,7 +41,7 @@ export default function Contact() {
     name: "",
     email: "",
     phone: "",
-    message: "",
+    businessDescription: "", // Renamed from message to businessDescription
   })
 
   const [errors, setErrors] = useState({
@@ -42,7 +52,7 @@ export default function Contact() {
     name: "",
     email: "",
     phone: "",
-    message: "",
+    businessDescription: "", // Renamed from message to businessDescription
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -57,6 +67,21 @@ export default function Contact() {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
+      }))
+    }
+  }
+
+  const handlePhoneChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      phone: value,
+    }))
+
+    // Clear error when field is edited
+    if (errors.phone) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: "",
       }))
     }
   }
@@ -133,8 +158,8 @@ export default function Contact() {
         newErrors.phone = "Phone number is required"
         isValid = false
       }
-      if (!formData.message.trim()) {
-        newErrors.message = "Message is required"
+      if (!formData.businessDescription.trim()) {
+        newErrors.businessDescription = "Business description is required"
         isValid = false
       }
     }
@@ -170,14 +195,14 @@ export default function Contact() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        message: formData.message,
+        businessDescription: formData.businessDescription, // Include businessDescription
         subject: `New Contact Form Submission from ${formData.name}`,
         from_name: "Ony Group Website",
         businessName: formData.businessName,
         website: formData.website,
         industry: formData.industry,
         timeline: formData.timeline,
-        services: formData.services.join(", "),
+        services: Array.isArray(formData.services) ? formData.services.join(", ") : formData.services,
       }
 
       // 1. Attempt to send data to Web3Forms
@@ -332,7 +357,6 @@ export default function Contact() {
                   <SelectContent>
                     <SelectItem value="automotive">Automotive</SelectItem>
                     <SelectItem value="construction">Construction</SelectItem>
-                    <SelectItem value="education">education</SelectItem>
                     <SelectItem value="education">Education</SelectItem>
                     <SelectItem value="energy & utilities">Energy & Utilities</SelectItem>
                     <SelectItem value="financial services">Financial Services</SelectItem>
@@ -419,30 +443,37 @@ export default function Contact() {
                 <Label htmlFor="phone">
                   Phone Number <span className="text-red-500">*</span>
                 </Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+254 700 000 000"
-                />
+                <div className="phone-input-container">
+                  <PhoneInput
+                    country={"ke"}
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    inputProps={{
+                      name: "phone",
+                      id: "phone",
+                      required: true,
+                    }}
+                    containerStyle={{ width: "100%" }}
+                    inputStyle={{ width: "100%", height: "40px" }}
+                    buttonStyle={{ borderRadius: "0.375rem 0 0 0.375rem" }}
+                  />
+                </div>
                 {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message">
-                  Message <span className="text-red-500">*</span>
+                <Label htmlFor="businessDescription">
+                  Business Description <span className="text-red-500">*</span>
                 </Label>
                 <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
+                  id="businessDescription"
+                  name="businessDescription"
+                  value={formData.businessDescription}
                   onChange={handleChange}
-                  placeholder="Tell us about your project..."
+                  placeholder="Tell us about your business, what you do, and what products or services you offer..."
                   className="min-h-[150px]"
                 />
-                {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
+                {errors.businessDescription && <p className="text-red-500 text-sm">{errors.businessDescription}</p>}
               </div>
 
               <div className="flex justify-between pt-4">
@@ -557,6 +588,38 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      <style jsx global>{`
+        .phone-input-container .react-tel-input .form-control {
+          width: 100%;
+          height: 40px;
+          border-radius: 0.375rem;
+          border: 1px solid hsl(var(--input));
+          font-size: 16px;
+          padding-left: 48px;
+        }
+        
+        .phone-input-container .react-tel-input .flag-dropdown {
+          border-radius: 0.375rem 0 0 0.375rem;
+          border: 1px solid hsl(var(--input));
+          background-color: transparent;
+        }
+        
+        .phone-input-container .react-tel-input .selected-flag {
+          border-radius: 0.375rem 0 0 0.375rem;
+          background-color: transparent;
+        }
+        
+        .phone-input-container .react-tel-input .selected-flag:hover,
+        .phone-input-container .react-tel-input .selected-flag:focus {
+          background-color: transparent;
+        }
+        
+        .phone-input-container .react-tel-input .form-control:focus {
+          border-color: hsl(var(--ring));
+          box-shadow: 0 0 0 2px hsl(var(--ring) / 0.3);
+        }
+      `}</style>
     </>
   )
 }

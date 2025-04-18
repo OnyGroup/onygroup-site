@@ -82,13 +82,15 @@ CONTACT INFORMATION:
 Name: ${formData.name}
 Email: ${formData.email}
 Phone Number: ${formData.phone}
-Message: ${formData.message || "No message provided"}
 
 BUSINESS DETAILS:
 Business Name: ${formData.businessName || "Not provided"}
 Website: ${formData.website || "Not provided"}
 Industry: ${formData.industry || "Not provided"}
 Timeline: ${formData.timeline || "Not provided"}
+
+BUSINESS DESCRIPTION:
+${formData.businessDescription || "Not provided"}
 
 SERVICES REQUESTED:
 ${formData.services ? formData.services : "No services selected"}
