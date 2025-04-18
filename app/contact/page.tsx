@@ -522,7 +522,7 @@ export default function Contact() {
                     By submitting this, you agree that we may use your info to contact you about your request. We'll
                     keep your details safe, never share them without your permission, and you can unsubscribe anytime.
                     See our{" "}
-                    <Link href="/privacy-policy" className="text-orange-600 hover:underline">
+                    <Link href="/privacy-centre" className="text-orange-600 hover:underline">
                       Privacy Policy
                     </Link>{" "}
                     for more details.
